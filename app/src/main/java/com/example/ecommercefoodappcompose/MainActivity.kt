@@ -7,10 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
 import com.example.ecommercefoodappcompose.ui.theme.ECommerceFoodAppComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,14 +27,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
-
-@Composable
-fun LoginScreen(modifier: Modifier) {
-    Text(
-        text = "Food Store",
-        modifier = modifier
-    )
 }
 
 @Preview(showBackground = true)
