@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
+import com.example.ecommercefoodappcompose.ui.components.NavigationGraph
 import com.example.ecommercefoodappcompose.ui.theme.ECommerceFoodAppComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ECommerceFoodAppComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(
+                    NavigationGraph(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -33,6 +33,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     ECommerceFoodAppComposeTheme {
-        LoginScreen(Modifier)
+        NavigationGraph(Modifier)
     }
 }

@@ -18,12 +18,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.ui.components.TextFieldWithValidation
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 
 @Composable
-fun LoginScreen(modifier: Modifier) {
+fun LoginScreen(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -40,15 +41,13 @@ fun LoginScreen(modifier: Modifier) {
         Spacer(modifier = Modifier.weight(0.15f))
         TextFieldWithValidation("Username", KeyboardType.Email, Icons.Filled.Person)
         TextFieldWithValidation(
-            "Password",
-            KeyboardType.Password,
-            Icons.Filled.Lock,
-            PasswordVisualTransformation()
+            "Password", KeyboardType.Password, Icons.Filled.Lock, PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.weight(0.05f))
         Button(modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 62.dp), onClick = {}) {
+            .padding(horizontal = 62.dp),
+            onClick = { navController.navigate("home_screen") }) {
             Text(text = "Login")
         }
         Spacer(modifier = Modifier.weight(0.5f))
