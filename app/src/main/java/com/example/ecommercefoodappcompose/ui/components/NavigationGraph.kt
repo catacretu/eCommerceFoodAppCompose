@@ -10,11 +10,11 @@ import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
 import com.example.ecommercefoodappcompose.ui.screens.SplashScreen
 
 @Composable
-
 fun NavigationGraph(modifier: Modifier) {
     val navController = rememberNavController()
     NavHost(
-        navController = navController, startDestination = "splash_screen"
+        navController = navController,
+        startDestination = "splash_screen"
     ) {
         composable("splash_screen") {
             SplashScreen {

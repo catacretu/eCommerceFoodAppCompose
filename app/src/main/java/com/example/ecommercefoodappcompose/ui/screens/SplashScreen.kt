@@ -27,20 +27,26 @@ fun SplashScreen(onNavigate: () -> Unit) {
     // AnimationEffect
     LaunchedEffect(key1 = true) {
         scale.animateTo(
-            targetValue = 0.75f, animationSpec = tween(durationMillis = 800, easing = {
-                OvershootInterpolator(4f).getInterpolation(it)
-            })
+            targetValue = 0.75f,
+            animationSpec = tween(
+                durationMillis = 800,
+                easing = {
+                    OvershootInterpolator(4f).getInterpolation(it)
+                }
+            )
         )
         delay(1000L)
         onNavigate()
     }
 
     // Image
+
     Box(
-        contentAlignment = Alignment.Center, modifier = Modifier
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
             .fillMaxSize()
             .paint(
-                //TODO - dummy values
+                // TODO - dummy values
                 painterResource(id = R.drawable.ic_launcher_background),
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.BottomEnd

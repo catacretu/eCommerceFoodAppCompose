@@ -41,13 +41,18 @@ fun LoginScreen(navController: NavController) {
         Spacer(modifier = Modifier.weight(0.15f))
         TextFieldWithValidation("Username", KeyboardType.Email, Icons.Filled.Person)
         TextFieldWithValidation(
-            "Password", KeyboardType.Password, Icons.Filled.Lock, PasswordVisualTransformation()
+            "Password",
+            KeyboardType.Password,
+            Icons.Filled.Lock,
+            PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.weight(0.05f))
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 62.dp),
-            onClick = { navController.navigate("home_screen") }) {
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 62.dp),
+            onClick = { navController.navigate("home_screen") }
+        ) {
             Text(text = "Login")
         }
         Spacer(modifier = Modifier.weight(0.5f))
