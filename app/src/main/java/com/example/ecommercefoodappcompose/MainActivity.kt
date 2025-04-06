@@ -7,11 +7,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ecommercefoodappcompose.ui.components.NavigationGraph
 import com.example.ecommercefoodappcompose.ui.theme.ECommerceFoodAppComposeTheme
+import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,10 +20,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val foodViewModel: FoodViewModel = hiltViewModel()
             ECommerceFoodAppComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavigationGraph(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        foodViewModel = foodViewModel
                     )
                 }
             }
@@ -31,10 +33,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ECommerceFoodAppComposeTheme {
-        NavigationGraph(Modifier)
-    }
-}
+// @Preview(showBackground = true)
+// @Composable
+// fun GreetingPreview() {
+//    ECommerceFoodAppComposeTheme {
+//        NavigationGraph(Modifier)
+//    }
+// }

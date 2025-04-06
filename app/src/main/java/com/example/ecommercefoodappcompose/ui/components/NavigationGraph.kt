@@ -8,9 +8,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ecommercefoodappcompose.ui.screens.HomeScreen
 import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
 import com.example.ecommercefoodappcompose.ui.screens.SplashScreen
+import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 
 @Composable
-fun NavigationGraph(modifier: Modifier) {
+fun NavigationGraph(modifier: Modifier, foodViewModel: FoodViewModel) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -28,11 +29,11 @@ fun NavigationGraph(modifier: Modifier) {
         }
 
         composable("home_screen") {
-            HomeScreen(navController)
+            HomeScreen(navController, foodViewModel)
         }
 
 //        composable("recipe_details") {
-//            val selectedItem by itemViewModel.selectedItem.observeAsState()
+//            val selectedItem by foodViewModel.selectedItem.observeAsState()
 //
 //            if (selectedItem != null) {
 //                ItemDetailsScreen(selectedItem!!) {
