@@ -1,5 +1,6 @@
 package com.example.ecommercefoodappcompose.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -22,11 +23,17 @@ import com.example.ecommercefoodappcompose.R
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 
 @Composable
-fun FoodCartItem(foodItem: FoodItem) {
+fun FoodCartItem(
+    foodItem: FoodItem,
+    onFoodItemClick: (FoodItem) -> Unit
+) {
     Card(
         modifier = Modifier
             .height(270.dp)
-            .padding(10.dp),
+            .padding(10.dp)
+            .clickable {
+                onFoodItemClick(foodItem)
+            },
         shape = RoundedCornerShape(5.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
@@ -41,8 +48,8 @@ fun FoodCartItem(foodItem: FoodItem) {
                 contentDescription = foodItem.title,
                 modifier = Modifier
                     .size(150.dp),
-                placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
-                error = painterResource(id = R.drawable.ic_launcher_foreground)
+                placeholder = painterResource(id = R.drawable.food_placeholder),
+                error = painterResource(id = R.drawable.food_placeholder)
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(

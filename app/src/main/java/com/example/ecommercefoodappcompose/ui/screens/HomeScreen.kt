@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.R
+import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import com.example.ecommercefoodappcompose.ui.components.FoodCartItem
 import com.example.ecommercefoodappcompose.ui.components.HandleLoadingState
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
@@ -70,18 +71,37 @@ fun HomeScreen(
                 )
             }
         } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(top = 80.dp, start = 30.dp, end = 30.dp, bottom = 80.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(foodItems.value) { foodItem ->
-                    FoodCartItem(foodItem)
+            FoodList(
+                foodItems.value,
+                onFoodItemClick = { selectedFoodItem ->
+                    foodViewModel.selectFoodItem(selectedFoodItem)
+                    navController.navigate("food_item_details")
                 }
-            }
+            )
+        }
+    }
+}
+
+@Composable
+fun FoodList(
+    foodItems: List<FoodItem>,
+    onFoodItemClick: (FoodItem) -> Unit
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(top = 80.dp, start = 30.dp, end = 30.dp, bottom = 80.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(foodItems) { foodItem ->
+            FoodCartItem(
+                foodItem,
+                onFoodItemClick = { selectedFoodItem ->
+                    onFoodItemClick(selectedFoodItem)
+                }
+            )
         }
     }
 }
