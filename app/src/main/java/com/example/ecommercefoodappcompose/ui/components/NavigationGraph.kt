@@ -1,10 +1,13 @@
 package com.example.ecommercefoodappcompose.ui.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.ecommercefoodappcompose.ui.screens.FoodItemDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.HomeScreen
 import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
 import com.example.ecommercefoodappcompose.ui.screens.SplashScreen
@@ -32,14 +35,14 @@ fun NavigationGraph(modifier: Modifier, foodViewModel: FoodViewModel) {
             HomeScreen(navController, foodViewModel)
         }
 
-//        composable("recipe_details") {
-//            val selectedItem by foodViewModel.selectedItem.observeAsState()
-//
-//            if (selectedItem != null) {
-//                ItemDetailsScreen(selectedItem!!) {
-//                    navController.popBackStack()
-//                }
-//            }
-//        }
+        composable("food_item_details") {
+            val selectedFoodItem by foodViewModel.selectedFoodItem.observeAsState()
+
+            if (selectedFoodItem != null) {
+                FoodItemDetailsScreen(selectedFoodItem!!) {
+                    navController.popBackStack()
+                }
+            }
+        }
     }
 }
