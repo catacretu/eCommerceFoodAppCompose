@@ -3,9 +3,11 @@ package com.example.ecommercefoodappcompose.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -26,6 +28,7 @@ import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.R
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import com.example.ecommercefoodappcompose.ui.components.FoodCartItem
+import com.example.ecommercefoodappcompose.ui.components.GradientButton
 import com.example.ecommercefoodappcompose.ui.components.HandleLoadingState
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
@@ -71,13 +74,31 @@ fun HomeScreen(
                 )
             }
         } else {
-            FoodList(
-                foodItems.value,
-                onFoodItemClick = { selectedFoodItem ->
-                    foodViewModel.selectFoodItem(selectedFoodItem)
-                    navController.navigate("food_item_details")
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                FoodList(
+                    foodItems.value,
+                    modifier = Modifier.weight(1f),
+                    onFoodItemClick = { selectedFoodItem ->
+                        foodViewModel.selectFoodItem(selectedFoodItem)
+                        navController.navigate("food_item_details")
+                    }
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp, end = 40.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    GradientButton(
+                        navController = navController,
+                        modifier = Modifier.padding(top = 15.dp, bottom = 85.dp),
+                        route = "cart_screen",
+                        textButton = "CART"
+                    )
                 }
-            )
+            }
         }
     }
 }
@@ -85,13 +106,14 @@ fun HomeScreen(
 @Composable
 fun FoodList(
     foodItems: List<FoodItem>,
+    modifier: Modifier,
     onFoodItemClick: (FoodItem) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(top = 80.dp, start = 30.dp, end = 30.dp, bottom = 80.dp),
+        modifier = modifier
+            .wrapContentHeight()
+            .padding(top = 80.dp, start = 30.dp, end = 30.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {

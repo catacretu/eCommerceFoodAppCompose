@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.ecommercefoodappcompose.ui.screens.CartScreen
 import com.example.ecommercefoodappcompose.ui.screens.FoodItemDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.HomeScreen
 import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
@@ -43,6 +44,9 @@ fun NavigationGraph(modifier: Modifier, foodViewModel: FoodViewModel) {
                     navController.popBackStack()
                 }
             }
+        }
+        composable("cart_screen") {
+            CartScreen(foodViewModel.foodItems.value!!)
         }
     }
 }
