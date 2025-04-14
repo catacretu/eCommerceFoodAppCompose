@@ -1,5 +1,8 @@
 package com.example.ecommercefoodappcompose.ui.screens
 
+import android.app.Activity
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -32,7 +35,12 @@ import com.example.ecommercefoodappcompose.ui.components.StarRatingBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 
 @Composable
-fun FoodItemDetailsScreen(foodItem: FoodItem, navController: NavController) {
+fun FoodItemDetailsScreen(
+    activity: Activity,
+    context: Context,
+    foodItem: FoodItem,
+    navController: NavController
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -46,7 +54,7 @@ fun FoodItemDetailsScreen(foodItem: FoodItem, navController: NavController) {
                 .size(32.dp)
                 .align(Alignment.Start)
         ) {
-            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
         }
         AsyncImage(
             model = foodItem.imageUrl,
@@ -100,10 +108,31 @@ fun FoodItemDetailsScreen(foodItem: FoodItem, navController: NavController) {
             horizontalArrangement = Arrangement.Center
         ) {
             GradientButton(
-                navController = navController,
-                route = "cart_screen",
-                textButton = "Add to cart"
+                textButton = "Add to cart",
+                onClick = { addToCartBtnListener(activity, context, foodItem) }
             )
         }
     }
+}
+
+private fun addToCartBtnListener(activity: Activity, context: Context, foodItem: FoodItem) {
+    val sh = activity.getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
+    val foodItemId = foodItem.id.toString()
+    var itemQuantity = 0
+    sh.edit().apply {
+        if (sh.contains(foodItemId)) {
+            itemQuantity = sh.getInt(foodItemId, 0)
+        }
+        if (itemQuantity > 0) { // if item exists, we will increase the quantity
+            itemQuantity++
+            putInt(foodItemId, itemQuantity)
+        } else { // if  not, we will put it in the cart
+            putInt(foodItemId, 1)
+        }
+    }.apply()
+    Toast.makeText(
+        context,
+        context.getString(R.string.product_added_successfully_msg),
+        Toast.LENGTH_SHORT
+    ).show()
 }

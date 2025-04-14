@@ -10,18 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.ui.theme.primaryLight
 
 @Composable
 fun GradientButton(
-    navController: NavController,
     modifier: Modifier = Modifier,
-    route: String,
-    textButton: String
+    textButton: String,
+    onClick: () -> Unit
 ) {
     Button(
-        onClick = { navController.navigate(route) },
+        onClick = onClick,
         modifier = modifier
             .background(
                 brush = Brush.linearGradient(

@@ -1,5 +1,6 @@
 package com.example.ecommercefoodappcompose.ui.screens
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +38,7 @@ import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 @Composable
 fun HomeScreen(
     navController: NavController,
+    activity: Activity,
     foodViewModel: FoodViewModel
 ) {
     val foodItems = foodViewModel.foodItems.observeAsState(initial = emptyList())
@@ -74,7 +76,7 @@ fun HomeScreen(
                 )
             }
         } else {
-            foodViewModel.loadCartItems()
+            foodViewModel.loadCartItems(activity)
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -93,10 +95,9 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.End
                 ) {
                     GradientButton(
-                        navController = navController,
                         modifier = Modifier.padding(top = 15.dp, bottom = 85.dp),
-                        route = "cart_screen",
-                        textButton = "CART"
+                        textButton = "CART",
+                        onClick = { navController.navigate("cart_screen") }
                     )
                 }
             }

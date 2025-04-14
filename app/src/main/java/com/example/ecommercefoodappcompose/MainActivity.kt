@@ -25,6 +25,8 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavigationGraph(
                         modifier = Modifier.padding(innerPadding),
+                        activity = this@MainActivity,
+                        context = this,
                         foodViewModel = foodViewModel
                     )
                 }

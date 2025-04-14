@@ -1,5 +1,7 @@
 package com.example.ecommercefoodappcompose.ui.viewmodel
 
+import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,13 +38,16 @@ class FoodViewModel @Inject constructor(
         }
     }
 
-    fun loadCartItems() {
+    fun loadCartItems(activity: Activity) {
+        val sh = activity.getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
+        val shCartList = sh.all.keys
+        val foodItemList = mutableListOf<FoodItem>()
         viewModelScope.launch {
-            val foodItemList = mutableListOf<FoodItem>()
-            val item1 = getFoodItemById(1)
-            val item2 = getFoodItemById(2)
-            foodItemList.add(item1)
-            foodItemList.add(item2)
+            for (foodItemId in shCartList) {
+                val itemId = foodItemId.toInt()
+                val item = getFoodItemById(itemId)
+                foodItemList.add(item)
+            }
             _cartItems.value = foodItemList
         }
     }
