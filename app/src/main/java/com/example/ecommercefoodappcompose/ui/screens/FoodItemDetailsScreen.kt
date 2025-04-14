@@ -23,20 +23,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.ecommercefoodappcompose.R
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
+import com.example.ecommercefoodappcompose.ui.components.GradientButton
 import com.example.ecommercefoodappcompose.ui.components.StarRatingBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 
 @Composable
-fun FoodItemDetailsScreen(foodItem: FoodItem, onBackClick: () -> Unit) {
+fun FoodItemDetailsScreen(foodItem: FoodItem, navController: NavController) {
     val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 70.dp)
     ) {
         IconButton(
-            onClick = onBackClick,
+            onClick = { navController.popBackStack() },
             modifier = Modifier
                 .padding(top = 50.dp, start = 10.dp)
                 .size(32.dp)
@@ -86,7 +90,20 @@ fun FoodItemDetailsScreen(foodItem: FoodItem, onBackClick: () -> Unit) {
             style = AppTypography.bodyLarge,
             modifier = Modifier
                 .verticalScroll(scrollState)
-                .padding(start = 25.dp, end = 25.dp, top = 10.dp, bottom = 60.dp)
+                .weight(1f)
+                .padding(start = 25.dp, end = 25.dp, top = 15.dp, bottom = 15.dp)
         )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            GradientButton(
+                navController = navController,
+                route = "cart_screen",
+                textButton = "Add to cart"
+            )
+        }
     }
 }

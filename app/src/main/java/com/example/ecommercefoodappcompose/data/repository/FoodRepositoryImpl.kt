@@ -3,7 +3,6 @@ package com.example.ecommercefoodappcompose.data.repository
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
@@ -22,13 +21,15 @@ class FoodRepositoryImpl @Inject constructor(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    override suspend fun getFoodItemById(foodItemId: Int): FoodItem {
+        return foodDAO.getFoodItemById(foodItemId)
+    }
+
     override fun getAllFoodItems(): LiveData<List<FoodItem>> = liveData(Dispatchers.IO) {
         _isLoading.postValue(true)
         if (isNetworkAvailable(context)) {
             try {
                 val response = foodService.getAllFoodItems()
-                Log.d("Network", "Requesting URL: ${response.raw()}")
-                Log.d("result", response.toString())
                 if (response.isSuccessful) {
                     response.body()?.let { items ->
                         foodDAO.deleteAllFoodItems()

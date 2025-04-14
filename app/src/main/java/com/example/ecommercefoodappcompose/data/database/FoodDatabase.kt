@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 
-@Database(entities = [FoodItem::class], version = 1, exportSchema = false)
+@Database(entities = [FoodItem::class], version = 2, exportSchema = false)
 abstract class FoodDatabase : RoomDatabase() {
     abstract fun foodDao(): FoodDAO
 }

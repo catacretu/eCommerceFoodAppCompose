@@ -74,6 +74,7 @@ fun HomeScreen(
                 )
             }
         } else {
+            foodViewModel.loadCartItems()
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {

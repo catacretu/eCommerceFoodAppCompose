@@ -40,13 +40,11 @@ fun NavigationGraph(modifier: Modifier, foodViewModel: FoodViewModel) {
             val selectedFoodItem by foodViewModel.selectedFoodItem.observeAsState()
 
             if (selectedFoodItem != null) {
-                FoodItemDetailsScreen(selectedFoodItem!!) {
-                    navController.popBackStack()
-                }
+                FoodItemDetailsScreen(selectedFoodItem!!, navController)
             }
         }
         composable("cart_screen") {
-            CartScreen(foodViewModel.foodItems.value!!)
+            CartScreen(foodViewModel.cartItems.value!!)
         }
     }
 }

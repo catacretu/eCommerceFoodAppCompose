@@ -5,4 +5,5 @@ import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 
 interface FoodRepository {
     fun getAllFoodItems(): LiveData<List<FoodItem>>
+    suspend fun getFoodItemById(foodItemId: Int): FoodItem
 }

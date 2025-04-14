@@ -16,6 +16,9 @@ interface FoodDAO {
     @Query("Select * FROM food_table")
     fun getAllFoodItems(): LiveData<List<FoodItem>>
 
+    @Query("Select * FROM food_table WHERE id = :foodItemId")
+    suspend fun getFoodItemById(foodItemId: Int): FoodItem
+
     @Query("Delete FROM food_table")
     suspend fun deleteAllFoodItems()
 }
