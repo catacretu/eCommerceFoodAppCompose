@@ -60,7 +60,10 @@ fun NavigationGraph(
             }
         }
         composable("cart_screen") {
-            CartScreen(foodViewModel.cartItems.value!!)
+            CartScreen(
+                activity,
+                foodViewModel
+            )
         }
     }
 }

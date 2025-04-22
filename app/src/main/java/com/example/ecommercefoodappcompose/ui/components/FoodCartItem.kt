@@ -1,5 +1,6 @@
 package com.example.ecommercefoodappcompose.ui.components
 
+import android.content.SharedPreferences
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,9 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -28,8 +32,13 @@ import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 
 @Composable
 fun FoodCartItem(
-    foodItem: FoodItem
+    foodItem: FoodItem,
+    sharedPref: SharedPreferences,
+    onRemoveItem: (FoodItem) -> Unit
 ) {
+    val itemQuantity: MutableState<Int> = remember {
+        mutableIntStateOf(sharedPref.getInt(foodItem.id.toString(), 1))
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,19 +77,32 @@ fun FoodCartItem(
             }
             Spacer(modifier = Modifier.width(10.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(modifier = Modifier.clickable {}) {
+                Box(
+                    modifier = Modifier.clickable {
+                        increaseClickListener(sharedPref, foodItem, itemQuantity)
+                    }
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.add_btn_26),
                         contentDescription = "Add"
                     )
                 }
                 Text(
-                    text = "1",
+                    text = itemQuantity.value.toString(),
                     style = MaterialTheme.typography.bodySmall,
                     fontSize = 16.sp,
                     modifier = Modifier.padding(start = 5.dp, end = 5.dp)
                 )
-                Box(modifier = Modifier.clickable {}) {
+                Box(
+                    modifier = Modifier.clickable {
+                        decreaseClickListener(
+                            sharedPref,
+                            foodItem,
+                            itemQuantity,
+                            onRemoveItem
+                        )
+                    }
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.remove_btn_26),
                         contentDescription = "Remove"
@@ -89,4 +111,32 @@ fun FoodCartItem(
             }
         }
     }
+}
+
+fun increaseClickListener(
+    sharedPref: SharedPreferences,
+    foodItem: FoodItem,
+    itemQuantity: MutableState<Int>
+) {
+    sharedPref.edit().apply {
+        putInt(foodItem.id.toString(), ++itemQuantity.value)
+//        updateTotalAmountPrice(item,"+")
+    }.apply()
+}
+
+fun decreaseClickListener(
+    sharedPref: SharedPreferences,
+    foodItem: FoodItem,
+    itemQuantity: MutableState<Int>,
+    onRemoveItem: (FoodItem) -> Unit
+) {
+    sharedPref.edit().apply {
+        if (itemQuantity.value == 1) {
+            onRemoveItem(foodItem)
+            remove(foodItem.id.toString())
+        } else {
+            putInt(foodItem.id.toString(), --itemQuantity.value)
+        }
+//        updateTotalAmountPrice(item,"-")
+    }.apply()
 }

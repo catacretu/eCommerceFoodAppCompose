@@ -51,4 +51,10 @@ class FoodViewModel @Inject constructor(
             _cartItems.value = foodItemList
         }
     }
+
+    fun removeCartItem(foodItemId: Int) {
+        val currentList = _cartItems.value?.toMutableList() ?: mutableListOf()
+        currentList.removeAll { it.id == foodItemId }
+        _cartItems.value = currentList
+    }
 }
