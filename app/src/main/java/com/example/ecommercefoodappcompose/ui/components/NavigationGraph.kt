@@ -62,6 +62,7 @@ fun NavigationGraph(
         composable("cart_screen") {
             CartScreen(
                 activity,
+                navController,
                 foodViewModel
             )
         }

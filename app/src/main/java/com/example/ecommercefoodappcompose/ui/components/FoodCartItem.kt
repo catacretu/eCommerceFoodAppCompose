@@ -19,11 +19,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -34,11 +33,9 @@ import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 fun FoodCartItem(
     foodItem: FoodItem,
     sharedPref: SharedPreferences,
+    itemQuantity: MutableState<Int>,
     onRemoveItem: (FoodItem) -> Unit
 ) {
-    val itemQuantity: MutableState<Int> = remember {
-        mutableIntStateOf(sharedPref.getInt(foodItem.id.toString(), 1))
-    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,8 +68,9 @@ fun FoodCartItem(
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = foodItem.price,
-                    style = MaterialTheme.typography.bodyMedium
+                    text = "${itemQuantity.value * extractPrice(foodItem.price)} lei",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold
                 )
             }
             Spacer(modifier = Modifier.width(10.dp))
@@ -120,7 +118,6 @@ fun increaseClickListener(
 ) {
     sharedPref.edit().apply {
         putInt(foodItem.id.toString(), ++itemQuantity.value)
-//        updateTotalAmountPrice(item,"+")
     }.apply()
 }
 
@@ -137,6 +134,13 @@ fun decreaseClickListener(
         } else {
             putInt(foodItem.id.toString(), --itemQuantity.value)
         }
-//        updateTotalAmountPrice(item,"-")
     }.apply()
+}
+
+fun extractPrice(pricePerProduct: String): Int {
+    val priceIndex = pricePerProduct.indexOf(" lei")
+    if (priceIndex != -1) {
+        return pricePerProduct.substring(0, priceIndex).toInt()
+    }
+    return 0
 }
