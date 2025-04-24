@@ -13,7 +13,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableLongStateOf
@@ -21,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -35,6 +40,7 @@ import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
@@ -77,28 +83,45 @@ fun HomeScreen(
             }
         } else {
             foodViewModel.loadCartItems(activity)
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                FoodList(
-                    foodItems.value,
-                    modifier = Modifier.weight(1f),
-                    onFoodItemClick = { selectedFoodItem ->
-                        foodViewModel.selectFoodItem(selectedFoodItem)
-                        navController.navigate("food_item_details")
-                    }
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp, end = 40.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    GradientButton(
-                        modifier = Modifier.padding(top = 15.dp, bottom = 85.dp),
-                        textButton = "CART",
-                        onClick = { navController.navigate("cart_screen") }
+            Scaffold(topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "Home Screen",
+                            style = AppTypography.titleLarge
+                        )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = inversePrimaryDark,
+                        titleContentColor = Color.White
                     )
+                )
+            }) { paddingValues ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    FoodList(
+                        foodItems.value,
+                        modifier = Modifier.weight(1f),
+                        onFoodItemClick = { selectedFoodItem ->
+                            foodViewModel.selectFoodItem(selectedFoodItem)
+                            navController.navigate("food_item_details")
+                        }
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 10.dp, end = 40.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        GradientButton(
+                            modifier = Modifier.padding(top = 15.dp, bottom = 85.dp),
+                            textButton = "CART",
+                            onClick = { navController.navigate("cart_screen") }
+                        )
+                    }
                 }
             }
         }
@@ -115,7 +138,7 @@ fun FoodList(
         columns = GridCells.Fixed(2),
         modifier = modifier
             .wrapContentHeight()
-            .padding(top = 80.dp, start = 30.dp, end = 30.dp),
+            .padding(top = 40.dp, start = 30.dp, end = 30.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
