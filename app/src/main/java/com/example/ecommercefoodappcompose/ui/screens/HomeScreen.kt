@@ -4,9 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -34,8 +32,8 @@ import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.R
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import com.example.ecommercefoodappcompose.ui.components.FoodCartItem
-import com.example.ecommercefoodappcompose.ui.components.GradientButton
 import com.example.ecommercefoodappcompose.ui.components.HandleLoadingState
+import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigationBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
@@ -83,20 +81,25 @@ fun HomeScreen(
             }
         } else {
             foodViewModel.loadCartItems(activity)
-            Scaffold(topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = "Home Screen",
-                            style = AppTypography.titleLarge
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                text = "Home Screen",
+                                style = AppTypography.titleLarge
+                            )
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = inversePrimaryDark,
+                            titleContentColor = Color.White
                         )
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = inversePrimaryDark,
-                        titleContentColor = Color.White
                     )
-                )
-            }) { paddingValues ->
+                },
+                bottomBar = {
+                    BottomNavigationBar(navController)
+                }
+            ) { paddingValues ->
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -110,18 +113,19 @@ fun HomeScreen(
                             navController.navigate("food_item_details")
                         }
                     )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 10.dp, end = 40.dp),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        GradientButton(
-                            modifier = Modifier.padding(top = 15.dp, bottom = 85.dp),
-                            textButton = "CART",
-                            onClick = { navController.navigate("cart_screen") }
-                        )
-                    }
+                    // as example for separate component
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(end = 40.dp),
+//                        horizontalArrangement = Arrangement.End
+//                    ) {
+//                        GradientButton(
+//                            modifier = Modifier.padding(top = 20.dp, bottom = 20.dp),
+//                            textButton = "CART",
+//                            onClick = { navController.navigate("cart_screen") }
+//                        )
+//                    }
                 }
             }
         }

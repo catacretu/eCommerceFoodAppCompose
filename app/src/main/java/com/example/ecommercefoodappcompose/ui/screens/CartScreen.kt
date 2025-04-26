@@ -40,6 +40,7 @@ import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.R
 import com.example.ecommercefoodappcompose.ui.components.FoodCartItem
 import com.example.ecommercefoodappcompose.ui.components.GradientButton
+import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigationBar
 import com.example.ecommercefoodappcompose.ui.components.extractPrice
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
@@ -52,31 +53,38 @@ fun CartScreen(
     navController: NavController,
     foodViewModel: FoodViewModel
 ) {
-    Scaffold(topBar = {
-        TopAppBar(
-            title = {
-                Text(
-                    text = "Cart Screen",
-                    style = AppTypography.titleLarge
-                )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = inversePrimaryDark,
-                titleContentColor = Color.White,
-                navigationIconContentColor = Color.White
-            ),
-            navigationIcon = {
-                IconButton(
-                    onClick = { navController.popBackStack() },
-                    modifier = Modifier
-                        .padding(start = 10.dp)
-                        .size(30.dp)
-                ) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Cart Screen",
+                        style = AppTypography.titleLarge
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = inversePrimaryDark,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                ),
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navController.popBackStack() },
+                        modifier = Modifier
+                            .padding(start = 10.dp)
+                            .size(30.dp)
+                    ) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
                 }
-            }
-        )
-    }) { paddingValues ->
+            )
+        },
+        bottomBar = {
+            BottomNavigationBar(
+                navController
+            )
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

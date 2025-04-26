@@ -2,6 +2,9 @@ package com.example.ecommercefoodappcompose.ui.components
 
 import android.app.Activity
 import android.content.Context
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -26,7 +29,11 @@ fun NavigationGraph(
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "splash_screen"
+        startDestination = "splash_screen",
+        enterTransition = { fadeIn(animationSpec = tween(500)) },
+        exitTransition = { fadeOut(animationSpec = tween(500)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(500)) },
+        popExitTransition = { fadeOut(animationSpec = tween(500)) }
     ) {
         composable("splash_screen") {
             SplashScreen {
