@@ -81,6 +81,7 @@ fun HomeScreen(
             }
         } else {
             foodViewModel.loadCartItems(activity)
+            foodViewModel.loadFavouritesItems(activity)
             Scaffold(
                 topBar = {
                     TopAppBar(
@@ -113,19 +114,6 @@ fun HomeScreen(
                             navController.navigate("food_item_details")
                         }
                     )
-                    // as example for separate component
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(end = 40.dp),
-//                        horizontalArrangement = Arrangement.End
-//                    ) {
-//                        GradientButton(
-//                            modifier = Modifier.padding(top = 20.dp, bottom = 20.dp),
-//                            textButton = "CART",
-//                            onClick = { navController.navigate("cart_screen") }
-//                        )
-//                    }
                 }
             }
         }

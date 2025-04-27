@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ecommercefoodappcompose.ui.screens.CartScreen
+import com.example.ecommercefoodappcompose.ui.screens.FavouritesScreen
 import com.example.ecommercefoodappcompose.ui.screens.FoodItemDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.HomeScreen
 import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
@@ -66,8 +67,17 @@ fun NavigationGraph(
                 )
             }
         }
+
         composable("cart_screen") {
             CartScreen(
+                activity,
+                navController,
+                foodViewModel
+            )
+        }
+
+        composable("favourites_screen") {
+            FavouritesScreen(
                 activity,
                 navController,
                 foodViewModel

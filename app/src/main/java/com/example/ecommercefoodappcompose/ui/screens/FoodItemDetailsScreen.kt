@@ -2,6 +2,7 @@ package com.example.ecommercefoodappcompose.ui.screens
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,10 +16,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -42,19 +47,42 @@ fun FoodItemDetailsScreen(
     navController: NavController
 ) {
     val scrollState = rememberScrollState()
+    val sh = activity.getSharedPreferences("favourite", Context.MODE_PRIVATE)
+    val isFavourite = remember { mutableStateOf(sh.getBoolean(foodItem.id.toString(), false)) }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = 70.dp)
     ) {
-        IconButton(
-            onClick = { navController.popBackStack() },
+        Row(
             modifier = Modifier
-                .padding(top = 50.dp, start = 10.dp)
-                .size(32.dp)
-                .align(Alignment.Start)
+                .fillMaxWidth()
+                .padding(top = 55.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .padding(start = 15.dp)
+                    .size(32.dp)
+            ) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+            }
+            IconButton(
+                onClick = {
+                    isFavourite.value = !isFavourite.value
+                    addToFavourite(sh, foodItem)
+                },
+                modifier = Modifier
+                    .padding(end = 15.dp)
+                    .size(32.dp)
+            ) {
+                Icon(
+                    if (isFavourite.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                    contentDescription =
+                    if (isFavourite.value) "Favourite Selected" else "Favourite Unselected"
+                )
+            }
         }
         AsyncImage(
             model = foodItem.imageUrl,
@@ -135,4 +163,15 @@ private fun addToCartBtnListener(activity: Activity, context: Context, foodItem:
         context.getString(R.string.product_added_successfully_msg),
         Toast.LENGTH_SHORT
     ).show()
+}
+
+private fun addToFavourite(sh: SharedPreferences, foodItem: FoodItem) {
+    val foodItemId = foodItem.id.toString()
+    sh.edit().apply {
+        if (sh.contains(foodItemId)) {
+            remove(foodItemId)
+        } else {
+            putBoolean(foodItemId, true)
+        }
+    }.apply()
 }

@@ -2,5 +2,6 @@
     <string name="app_name">eCommerceFoodAppCompose</string>
     <string name="network_data_error">Network error occurred while fetching data.</string>
     <string name="empty_cart_msg">The cart is empty!</string>
+    <string name="empty_favourites_msg">No favourites yet!"</string>
     <string name="product_added_successfully_msg">The product has been added successfully!</string>
 </resources>

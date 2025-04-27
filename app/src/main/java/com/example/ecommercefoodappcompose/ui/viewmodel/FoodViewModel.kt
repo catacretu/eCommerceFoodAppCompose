@@ -24,6 +24,8 @@ class FoodViewModel @Inject constructor(
     val selectedFoodItem: LiveData<FoodItem> = _selectedFoodItem
     private val _cartItems = MutableLiveData<List<FoodItem>>()
     val cartItems: LiveData<List<FoodItem>> = _cartItems
+    private val _favouritesItems = MutableLiveData<List<FoodItem>>()
+    val favouritesItems: LiveData<List<FoodItem>> = _favouritesItems
 
     init {
         // The data is already being emitted via LiveData, no explicit action is required here.
@@ -49,6 +51,29 @@ class FoodViewModel @Inject constructor(
                 foodItemList.add(item)
             }
             _cartItems.value = foodItemList
+        }
+    }
+
+    fun loadFavouritesItems(activity: Activity) {
+        val sh = activity.getSharedPreferences("favourite", Context.MODE_PRIVATE)
+        val shFavouriteList = sh.all.keys
+        val foodItemList = mutableListOf<FoodItem>()
+        viewModelScope.launch {
+            for (foodItemId in shFavouriteList) {
+                val itemId = foodItemId.toInt()
+                val item = getFoodItemById(itemId)
+                foodItemList.add(item)
+            }
+            _favouritesItems.value = foodItemList
+        }
+    }
+
+    fun addCartItem(foodItem: FoodItem) {
+        val currentList = _cartItems.value?.toMutableList() ?: mutableListOf()
+
+        if (currentList.none { it.id == foodItem.id }) {
+            currentList.add(foodItem)
+            _cartItems.value = currentList
         }
     }
 
