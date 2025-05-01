@@ -45,12 +45,16 @@ fun FoodRowItem(
     itemQuantity: MutableState<Int> = mutableIntStateOf(1),
     onAddItem: (FoodItem) -> Unit = {},
     onRemoveItem: (Int) -> Unit,
+    onClickItem: (FoodItem) -> Unit,
     isFavourite: Boolean = false
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp),
+            .padding(start = 20.dp, end = 20.dp)
+            .clickable {
+                onClickItem(foodItem)
+            },
         shape = RoundedCornerShape(5.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {

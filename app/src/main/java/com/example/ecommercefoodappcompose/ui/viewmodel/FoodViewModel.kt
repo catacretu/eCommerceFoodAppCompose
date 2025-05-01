@@ -82,4 +82,15 @@ class FoodViewModel @Inject constructor(
         currentList.removeAll { it.id == foodItemId }
         _cartItems.value = currentList
     }
+
+    fun toggleFavourite(foodItem: FoodItem, isFavourite: Boolean) {
+        val currentList = _favouritesItems.value?.toMutableList() ?: mutableListOf()
+        if (isFavourite) {
+            currentList.add(foodItem)
+            _favouritesItems.value = currentList
+        } else {
+            currentList.remove(foodItem)
+            _favouritesItems.value = currentList
+        }
+    }
 }

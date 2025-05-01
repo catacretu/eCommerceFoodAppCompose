@@ -38,13 +38,15 @@ import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import com.example.ecommercefoodappcompose.ui.components.GradientButton
 import com.example.ecommercefoodappcompose.ui.components.StarRatingBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
+import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 
 @Composable
 fun FoodItemDetailsScreen(
     activity: Activity,
     context: Context,
     foodItem: FoodItem,
-    navController: NavController
+    navController: NavController,
+    foodViewModel: FoodViewModel
 ) {
     val scrollState = rememberScrollState()
     val sh = activity.getSharedPreferences("favourite", Context.MODE_PRIVATE)
@@ -71,7 +73,7 @@ fun FoodItemDetailsScreen(
             IconButton(
                 onClick = {
                     isFavourite.value = !isFavourite.value
-                    addToFavourite(sh, foodItem)
+                    addToFavourite(sh, foodViewModel, foodItem, isFavourite.value)
                 },
                 modifier = Modifier
                     .padding(end = 15.dp)
@@ -165,7 +167,12 @@ private fun addToCartBtnListener(activity: Activity, context: Context, foodItem:
     ).show()
 }
 
-private fun addToFavourite(sh: SharedPreferences, foodItem: FoodItem) {
+private fun addToFavourite(
+    sh: SharedPreferences,
+    foodViewModel: FoodViewModel,
+    foodItem: FoodItem,
+    isFavourite: Boolean
+) {
     val foodItemId = foodItem.id.toString()
     sh.edit().apply {
         if (sh.contains(foodItemId)) {
@@ -174,4 +181,5 @@ private fun addToFavourite(sh: SharedPreferences, foodItem: FoodItem) {
             putBoolean(foodItemId, true)
         }
     }.apply()
+    foodViewModel.toggleFavourite(foodItem, isFavourite)
 }
