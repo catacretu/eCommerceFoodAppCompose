@@ -96,7 +96,7 @@ fun CartScreen(
                 GradientButton(
                     modifier = Modifier.padding(top = 15.dp, bottom = 85.dp),
                     textButton = "Checkout",
-                    onClick = { navController.navigate("cart_screen") }
+                    onClick = { navController.navigate("shipping_screen") }
                 )
             }
         }
