@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
+import com.example.ecommercefoodappcompose.data.local.model.ShippingDetailsItem
 import com.example.ecommercefoodappcompose.data.repository.FoodRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ class FoodViewModel @Inject constructor(
     val cartItems: LiveData<List<FoodItem>> = _cartItems
     private val _favouritesItems = MutableLiveData<List<FoodItem>>()
     val favouritesItems: LiveData<List<FoodItem>> = _favouritesItems
+    var shippingDetails: ShippingDetailsItem = ShippingDetailsItem()
 
     init {
         // The data is already being emitted via LiveData, no explicit action is required here.

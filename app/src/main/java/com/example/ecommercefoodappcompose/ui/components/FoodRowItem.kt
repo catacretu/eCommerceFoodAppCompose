@@ -46,7 +46,8 @@ fun FoodRowItem(
     onAddItem: (FoodItem) -> Unit = {},
     onRemoveItem: (Int) -> Unit,
     onClickItem: (FoodItem) -> Unit,
-    isFavourite: Boolean = false
+    isFavourite: Boolean = false,
+    isCheckoutScreen: Boolean = false
 ) {
     Card(
         modifier = Modifier
@@ -94,66 +95,73 @@ fun FoodRowItem(
             }
             Spacer(modifier = Modifier.width(10.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (isFavourite) {
-                    val sh = activity.getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
-                    val isAddedToCart =
-                        remember {
-                            mutableStateOf(
-                                sh.contains(foodItem.id.toString())
+                if (!isCheckoutScreen) {
+                    if (isFavourite) {
+                        val sh =
+                            activity.getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
+                        val isAddedToCart =
+                            remember {
+                                mutableStateOf(
+                                    sh.contains(foodItem.id.toString())
+                                )
+                            }
+                        Box(
+                            modifier = Modifier.clickable {
+                                isAddedToCart.value = !isAddedToCart.value
+                                addToCartBtnListener(
+                                    sh,
+                                    foodItem,
+                                    onAddItem,
+                                    onRemoveItem,
+                                    isAddedToCart
+                                )
+                            }
+                        ) {
+                            Image(
+                                if (isAddedToCart.value) {
+                                    Icons.Filled.ShoppingCart
+                                } else {
+                                    Icons.Outlined.ShoppingCart
+                                },
+                                contentDescription = "Add to cart, button"
                             )
                         }
-                    Box(
-                        modifier = Modifier.clickable {
-                            isAddedToCart.value = !isAddedToCart.value
-                            addToCartBtnListener(
-                                sh,
-                                foodItem,
-                                onAddItem,
-                                onRemoveItem,
-                                isAddedToCart
+                    } else {
+                        Box(
+                            modifier = Modifier.clickable {
+                                increaseClickListener(
+                                    sharedPref,
+                                    foodItem.id.toString(),
+                                    itemQuantity
+                                )
+                            }
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.add_btn_26),
+                                contentDescription = "Add"
                             )
                         }
-                    ) {
-                        Image(
-                            if (isAddedToCart.value) {
-                                Icons.Filled.ShoppingCart
-                            } else {
-                                Icons.Outlined.ShoppingCart
-                            },
-                            contentDescription = "Add to cart, button"
+                        Text(
+                            text = itemQuantity.value.toString(),
+                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 16.sp,
+                            modifier = Modifier.padding(start = 5.dp, end = 5.dp)
                         )
-                    }
-                } else {
-                    Box(
-                        modifier = Modifier.clickable {
-                            increaseClickListener(sharedPref, foodItem.id.toString(), itemQuantity)
-                        }
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.add_btn_26),
-                            contentDescription = "Add"
-                        )
-                    }
-                    Text(
-                        text = itemQuantity.value.toString(),
-                        style = MaterialTheme.typography.bodySmall,
-                        fontSize = 16.sp,
-                        modifier = Modifier.padding(start = 5.dp, end = 5.dp)
-                    )
-                    Box(
-                        modifier = Modifier.clickable {
-                            decreaseClickListener(
-                                sharedPref,
-                                foodItem.id.toString(),
-                                itemQuantity,
-                                onRemoveItem
+                        Box(
+                            modifier = Modifier.clickable {
+                                decreaseClickListener(
+                                    sharedPref,
+                                    foodItem.id.toString(),
+                                    itemQuantity,
+                                    onRemoveItem
+                                )
+                            }
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.remove_btn_26),
+                                contentDescription = "Remove"
                             )
                         }
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.remove_btn_26),
-                            contentDescription = "Remove"
-                        )
                     }
                 }
             }

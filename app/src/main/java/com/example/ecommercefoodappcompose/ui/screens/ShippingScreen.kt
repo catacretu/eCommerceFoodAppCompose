@@ -28,16 +28,19 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.data.local.model.DeliveryOption
+import com.example.ecommercefoodappcompose.data.local.model.ShippingDetailsItem
 import com.example.ecommercefoodappcompose.ui.components.DeliveryOptionsGroup
 import com.example.ecommercefoodappcompose.ui.components.TextFieldWithIcon
 import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigationBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
+import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShippingScreen(
-    navController: NavController
+    navController: NavController,
+    foodViewModel: FoodViewModel
 ) {
     val fieldsValue = List(9) { rememberSaveable { mutableStateOf("") } }
     val focusRequesters = List(9) { remember { FocusRequester() } }
@@ -240,7 +243,20 @@ fun ShippingScreen(
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     },
-                onClick = {}
+                onClick = {
+                    foodViewModel.shippingDetails = ShippingDetailsItem(
+                        name = fieldsValue[0].value,
+                        phone = fieldsValue[1].value,
+                        email = fieldsValue[2].value,
+                        address = "${fieldsValue[6].value} ${fieldsValue[5].value} Street, " +
+                            "${fieldsValue[3].value}, ${fieldsValue[4].value} \n" +
+                            fieldsValue[7].value,
+                        postalCode = fieldsValue[8].value,
+                        deliveryOption = selectedDeliveryOption
+                    )
+//                    navController.popBackStack()
+                    navController.navigate("checkout_screen")
+                }
             ) {
                 Text(text = "Continue")
             }

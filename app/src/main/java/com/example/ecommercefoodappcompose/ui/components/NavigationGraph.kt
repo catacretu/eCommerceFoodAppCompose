@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ecommercefoodappcompose.ui.screens.CartScreen
+import com.example.ecommercefoodappcompose.ui.screens.CheckoutScreen
 import com.example.ecommercefoodappcompose.ui.screens.FavouritesScreen
 import com.example.ecommercefoodappcompose.ui.screens.FoodItemDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.HomeScreen
@@ -92,7 +93,18 @@ fun NavigationGraph(
         }
 
         composable("shipping_screen") {
-            ShippingScreen(navController)
+            ShippingScreen(
+                navController,
+                foodViewModel
+            )
+        }
+
+        composable("checkout_screen") {
+            CheckoutScreen(
+                activity,
+                navController,
+                foodViewModel
+            )
         }
     }
 }
