@@ -2,6 +2,9 @@ package com.example.ecommercefoodappcompose.ui.viewmodel
 
 import android.app.Activity
 import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,7 +30,8 @@ class FoodViewModel @Inject constructor(
     val cartItems: LiveData<List<FoodItem>> = _cartItems
     private val _favouritesItems = MutableLiveData<List<FoodItem>>()
     val favouritesItems: LiveData<List<FoodItem>> = _favouritesItems
-    var shippingDetails: ShippingDetailsItem = ShippingDetailsItem()
+    var shippingDetailsState by mutableStateOf(ShippingDetailsItem())
+        private set
 
     init {
         // The data is already being emitted via LiveData, no explicit action is required here.
@@ -94,5 +98,9 @@ class FoodViewModel @Inject constructor(
             currentList.remove(foodItem)
             _favouritesItems.value = currentList
         }
+    }
+
+    fun updateShippingDetails(newDetails: ShippingDetailsItem) {
+        shippingDetailsState = newDetails
     }
 }

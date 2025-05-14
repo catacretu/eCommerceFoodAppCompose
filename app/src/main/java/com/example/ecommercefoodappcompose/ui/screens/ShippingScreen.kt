@@ -19,7 +19,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
@@ -27,7 +26,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
-import com.example.ecommercefoodappcompose.data.local.model.DeliveryOption
 import com.example.ecommercefoodappcompose.data.local.model.ShippingDetailsItem
 import com.example.ecommercefoodappcompose.ui.components.DeliveryOptionsGroup
 import com.example.ecommercefoodappcompose.ui.components.TextFieldWithIcon
@@ -42,11 +40,18 @@ fun ShippingScreen(
     navController: NavController,
     foodViewModel: FoodViewModel
 ) {
-    val fieldsValue = List(9) { rememberSaveable { mutableStateOf("") } }
     val focusRequesters = List(9) { remember { FocusRequester() } }
-    val (selectedDeliveryOption, setSelectedDeliveryOption) = remember {
-        mutableStateOf(DeliveryOption.HOME_DELIVERY)
-    }
+    val shippingState = foodViewModel.shippingDetailsState
+    val name = remember { mutableStateOf(shippingState.name) }
+    val phone = remember { mutableStateOf(shippingState.phone) }
+    val email = remember { mutableStateOf(shippingState.email) }
+    val county = remember { mutableStateOf(shippingState.county) }
+    val city = remember { mutableStateOf(shippingState.city) }
+    val street = remember { mutableStateOf(shippingState.street) }
+    val streetNumber = remember { mutableStateOf(shippingState.streetNumber) }
+    val apartmentDetails = remember { mutableStateOf(shippingState.apartmentDetails) }
+    val postalCode = remember { mutableStateOf(shippingState.postalCode) }
+    val selectedDeliveryOption = remember { mutableStateOf(shippingState.deliveryOption) }
 
     Scaffold(
         topBar = {
@@ -84,14 +89,14 @@ fun ShippingScreen(
                 streetField,
                 streetNumberField,
                 apartmentNumberField,
-                postalCode,
+                postalCodeField,
                 deliveryOptions,
                 continueBtn
             ) = createRefs()
 
             TextFieldWithIcon(
                 fieldName = "Name",
-                fieldValue = fieldsValue[0],
+                fieldValue = name,
                 icon = Icons.Default.Person,
                 iconDescription = "Person Icon",
                 modifier = Modifier
@@ -106,7 +111,7 @@ fun ShippingScreen(
 
             TextFieldWithIcon(
                 fieldName = "Phone",
-                fieldValue = fieldsValue[1],
+                fieldValue = phone,
                 icon = Icons.Default.Phone,
                 iconDescription = "Phone Icon",
                 modifier = Modifier
@@ -121,7 +126,7 @@ fun ShippingScreen(
 
             TextFieldWithIcon(
                 fieldName = "Email",
-                fieldValue = fieldsValue[2],
+                fieldValue = email,
                 icon = Icons.Default.Email,
                 iconDescription = "Email Icon",
                 modifier = Modifier
@@ -136,7 +141,7 @@ fun ShippingScreen(
 
             TextFieldWithIcon(
                 fieldName = "County",
-                fieldValue = fieldsValue[3],
+                fieldValue = county,
                 icon = Icons.Default.LocationOn,
                 iconDescription = "County Icon",
                 modifier = Modifier
@@ -151,7 +156,7 @@ fun ShippingScreen(
 
             TextFieldWithIcon(
                 fieldName = "City",
-                fieldValue = fieldsValue[4],
+                fieldValue = city,
                 icon = Icons.Default.LocationOn,
                 iconDescription = "City Icon",
                 modifier = Modifier
@@ -167,7 +172,7 @@ fun ShippingScreen(
 
             TextFieldWithIcon(
                 fieldName = "Street",
-                fieldValue = fieldsValue[5],
+                fieldValue = street,
                 icon = Icons.Default.Home,
                 iconDescription = "Street Icon",
                 modifier = Modifier
@@ -181,7 +186,7 @@ fun ShippingScreen(
             )
             TextFieldWithIcon(
                 fieldName = "Street No.",
-                fieldValue = fieldsValue[6],
+                fieldValue = streetNumber,
                 icon = Icons.Default.Home,
                 iconDescription = "Street Number",
                 modifier = Modifier
@@ -195,7 +200,7 @@ fun ShippingScreen(
             )
             TextFieldWithIcon(
                 fieldName = "Apt, Suite, etc.",
-                fieldValue = fieldsValue[7],
+                fieldValue = apartmentDetails,
                 icon = Icons.Default.Home,
                 iconDescription = "Apartment Number",
                 modifier = Modifier
@@ -211,12 +216,12 @@ fun ShippingScreen(
 
             TextFieldWithIcon(
                 fieldName = "Postal Code",
-                fieldValue = fieldsValue[8],
+                fieldValue = postalCode,
                 icon = Icons.Default.Home,
                 iconDescription = "Postal Code",
                 modifier = Modifier
                     .padding(horizontal = 25.dp)
-                    .constrainAs(postalCode) {
+                    .constrainAs(postalCodeField) {
                         top.linkTo(apartmentNumberField.bottom, margin = 10.dp)
                         start.linkTo(parent.start)
                     },
@@ -226,10 +231,10 @@ fun ShippingScreen(
             )
 
             DeliveryOptionsGroup(
-                selectedOption = selectedDeliveryOption,
-                onOptionSelected = setSelectedDeliveryOption,
+                selectedOption = selectedDeliveryOption.value,
+                onOptionSelected = { selectedDeliveryOption.value = it },
                 modifier = Modifier.constrainAs(deliveryOptions) {
-                    top.linkTo(postalCode.bottom, margin = 15.dp)
+                    top.linkTo(postalCodeField.bottom, margin = 15.dp)
                     start.linkTo(parent.start, margin = 25.dp)
                 }
             )
@@ -244,17 +249,20 @@ fun ShippingScreen(
                         end.linkTo(parent.end)
                     },
                 onClick = {
-                    foodViewModel.shippingDetails = ShippingDetailsItem(
-                        name = fieldsValue[0].value,
-                        phone = fieldsValue[1].value,
-                        email = fieldsValue[2].value,
-                        address = "${fieldsValue[6].value} ${fieldsValue[5].value} Street, " +
-                            "${fieldsValue[3].value}, ${fieldsValue[4].value} \n" +
-                            fieldsValue[7].value,
-                        postalCode = fieldsValue[8].value,
-                        deliveryOption = selectedDeliveryOption
+                    foodViewModel.updateShippingDetails(
+                        ShippingDetailsItem(
+                            name = name.value,
+                            phone = phone.value,
+                            email = email.value,
+                            county = county.value,
+                            city = city.value,
+                            street = street.value,
+                            streetNumber = streetNumber.value,
+                            apartmentDetails = apartmentDetails.value,
+                            postalCode = postalCode.value,
+                            deliveryOption = selectedDeliveryOption.value
+                        )
                     )
-//                    navController.popBackStack()
                     navController.navigate("checkout_screen")
                 }
             ) {

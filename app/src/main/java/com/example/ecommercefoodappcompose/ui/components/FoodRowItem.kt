@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.ecommercefoodappcompose.R
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
+import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 
 @Composable
 fun FoodRowItem(
@@ -81,7 +81,7 @@ fun FoodRowItem(
             ) {
                 Text(
                     text = foodItem.title,
-                    style = MaterialTheme.typography.titleMedium
+                    style = AppTypography.titleMedium
                 )
                 Text(
                     text = if (isFavourite) {
@@ -89,80 +89,86 @@ fun FoodRowItem(
                     } else {
                         "${itemQuantity.value * extractPrice(foodItem.price)} lei"
                     },
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = AppTypography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
             }
             Spacer(modifier = Modifier.width(10.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (!isCheckoutScreen) {
-                    if (isFavourite) {
-                        val sh =
-                            activity.getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
-                        val isAddedToCart =
-                            remember {
-                                mutableStateOf(
-                                    sh.contains(foodItem.id.toString())
-                                )
-                            }
-                        Box(
-                            modifier = Modifier.clickable {
-                                isAddedToCart.value = !isAddedToCart.value
-                                addToCartBtnListener(
-                                    sh,
-                                    foodItem,
-                                    onAddItem,
-                                    onRemoveItem,
-                                    isAddedToCart
-                                )
-                            }
-                        ) {
-                            Image(
-                                if (isAddedToCart.value) {
-                                    Icons.Filled.ShoppingCart
-                                } else {
-                                    Icons.Outlined.ShoppingCart
-                                },
-                                contentDescription = "Add to cart, button"
+                if (isFavourite) {
+                    val sh =
+                        activity.getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
+                    val isAddedToCart =
+                        remember {
+                            mutableStateOf(
+                                sh.contains(foodItem.id.toString())
                             )
                         }
-                    } else {
-                        Box(
-                            modifier = Modifier.clickable {
-                                increaseClickListener(
-                                    sharedPref,
-                                    foodItem.id.toString(),
-                                    itemQuantity
-                                )
-                            }
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.add_btn_26),
-                                contentDescription = "Add"
+                    Box(
+                        modifier = Modifier.clickable {
+                            isAddedToCart.value = !isAddedToCart.value
+                            addToCartBtnListener(
+                                sh,
+                                foodItem,
+                                onAddItem,
+                                onRemoveItem,
+                                isAddedToCart
                             )
                         }
-                        Text(
-                            text = itemQuantity.value.toString(),
-                            style = MaterialTheme.typography.bodySmall,
-                            fontSize = 16.sp,
-                            modifier = Modifier.padding(start = 5.dp, end = 5.dp)
+                    ) {
+                        Image(
+                            if (isAddedToCart.value) {
+                                Icons.Filled.ShoppingCart
+                            } else {
+                                Icons.Outlined.ShoppingCart
+                            },
+                            contentDescription = "Add to cart, button"
                         )
-                        Box(
-                            modifier = Modifier.clickable {
-                                decreaseClickListener(
-                                    sharedPref,
-                                    foodItem.id.toString(),
-                                    itemQuantity,
-                                    onRemoveItem
-                                )
-                            }
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.remove_btn_26),
-                                contentDescription = "Remove"
+                    }
+                } else if (!isCheckoutScreen) {
+                    Box(
+                        modifier = Modifier.clickable {
+                            increaseClickListener(
+                                sharedPref,
+                                foodItem.id.toString(),
+                                itemQuantity
                             )
                         }
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.add_btn_26),
+                            contentDescription = "Add"
+                        )
                     }
+                    Text(
+                        text = itemQuantity.value.toString(),
+                        style = AppTypography.bodySmall,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(start = 5.dp, end = 5.dp)
+                    )
+                    Box(
+                        modifier = Modifier.clickable {
+                            decreaseClickListener(
+                                sharedPref,
+                                foodItem.id.toString(),
+                                itemQuantity,
+                                onRemoveItem
+                            )
+                        }
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.remove_btn_26),
+                            contentDescription = "Remove"
+                        )
+                    }
+                } else {
+                    Text(
+                        text = "${itemQuantity.value}",
+                        style = AppTypography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(end = 15.dp)
+                    )
                 }
             }
         }
