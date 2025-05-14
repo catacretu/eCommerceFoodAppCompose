@@ -58,7 +58,7 @@ fun ShippingScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "More Screen",
+                        text = "Shipping Screen",
                         style = AppTypography.titleLarge
                     )
                 },

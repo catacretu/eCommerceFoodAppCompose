@@ -103,4 +103,8 @@ class FoodViewModel @Inject constructor(
     fun updateShippingDetails(newDetails: ShippingDetailsItem) {
         shippingDetailsState = newDetails
     }
+
+    fun clearShippingDetails() {
+        shippingDetailsState = ShippingDetailsItem()
+    }
 }

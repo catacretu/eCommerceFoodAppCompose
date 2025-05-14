@@ -83,7 +83,9 @@ fun CheckoutScreen(
         Text(
             text = "${shippingDetails.phone}\n" +
                 "${shippingDetails.email}\n" +
-                " ${shippingDetails.postalCode}\n" +
+                "${shippingDetails.streetNumber} ${shippingDetails.street} Street\n" +
+                "${shippingDetails.city}, ${shippingDetails.county} " +
+                "${shippingDetails.postalCode}\n" +
                 shippingDetails.deliveryOption.displayText,
             style = AppTypography.bodyLarge,
             modifier = Modifier.padding(top = 5.dp, start = 25.dp),
@@ -144,7 +146,9 @@ fun CheckoutScreen(
                 .padding(top = 25.dp)
                 .align(Alignment.CenterHorizontally),
             textButton = "Place Order",
-            onClick = {}
+            onClick = {
+                foodViewModel.clearShippingDetails()
+            }
         )
     }
 }
