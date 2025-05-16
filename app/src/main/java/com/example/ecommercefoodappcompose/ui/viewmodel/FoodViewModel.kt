@@ -14,6 +14,7 @@ import com.example.ecommercefoodappcompose.data.local.model.ShippingDetailsItem
 import com.example.ecommercefoodappcompose.data.repository.FoodRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -22,16 +23,22 @@ import javax.inject.Inject
 class FoodViewModel @Inject constructor(
     private val foodRepository: FoodRepositoryImpl
 ) : ViewModel() {
-    val foodItems: LiveData<List<FoodItem>> = foodRepository.getAllFoodItems()
     val isLoading: LiveData<Boolean> = foodRepository.isLoading
+    private val _isSearching = MutableLiveData<Boolean>()
+    val isSearching: LiveData<Boolean> = _isSearching
+
     private val _selectedFoodItem = MutableLiveData<FoodItem>()
     val selectedFoodItem: LiveData<FoodItem> = _selectedFoodItem
+    var shippingDetailsState by mutableStateOf(ShippingDetailsItem())
+        private set
+
+    val foodItems: LiveData<List<FoodItem>> = foodRepository.getAllFoodItems()
+    private val _filteredFoodItems = MutableLiveData<List<FoodItem>>()
+    val filteredFoodItems: LiveData<List<FoodItem>> = _filteredFoodItems
     private val _cartItems = MutableLiveData<List<FoodItem>>()
     val cartItems: LiveData<List<FoodItem>> = _cartItems
     private val _favouritesItems = MutableLiveData<List<FoodItem>>()
     val favouritesItems: LiveData<List<FoodItem>> = _favouritesItems
-    var shippingDetailsState by mutableStateOf(ShippingDetailsItem())
-        private set
 
     init {
         // The data is already being emitted via LiveData, no explicit action is required here.
@@ -71,6 +78,18 @@ class FoodViewModel @Inject constructor(
                 foodItemList.add(item)
             }
             _favouritesItems.value = foodItemList
+        }
+    }
+
+    fun searchFoodItems(query: String) {
+        _isSearching.value = true
+        viewModelScope.launch {
+            delay(500)
+            val filteredList = foodItems.value?.filter { foodItem ->
+                foodItem.name.contains(query, ignoreCase = true)
+            } ?: emptyList()
+            _filteredFoodItems.value = filteredList
+            _isSearching.value = false
         }
     }
 

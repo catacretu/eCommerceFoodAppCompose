@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 class FoodItem(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
-    val title: String,
+    val name: String,
     val price: String,
     val description: String,
     val imageUrl: String,

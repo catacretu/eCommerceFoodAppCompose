@@ -4,4 +4,5 @@
     <string name="empty_cart_msg">The cart is empty!</string>
     <string name="empty_favourites_msg">No favourites yet!"</string>
     <string name="product_added_successfully_msg">The product has been added successfully!</string>
+    <string name="search_bar_txt">What are you shopping for today?</string>
 </resources>

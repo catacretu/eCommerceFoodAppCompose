@@ -45,7 +45,7 @@ fun FoodCartItem(
         ) {
             AsyncImage(
                 model = foodItem.imageUrl,
-                contentDescription = foodItem.title,
+                contentDescription = foodItem.name,
                 modifier = Modifier
                     .size(150.dp),
                 placeholder = painterResource(id = R.drawable.food_placeholder),
@@ -53,7 +53,7 @@ fun FoodCartItem(
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(
-                text = foodItem.title,
+                text = foodItem.name,
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center
             )

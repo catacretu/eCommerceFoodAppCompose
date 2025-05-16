@@ -88,7 +88,7 @@ fun FoodItemDetailsScreen(
         }
         AsyncImage(
             model = foodItem.imageUrl,
-            contentDescription = foodItem.title,
+            contentDescription = foodItem.name,
             modifier = Modifier
                 .height(270.dp)
                 .fillMaxWidth()
@@ -101,7 +101,7 @@ fun FoodItemDetailsScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = foodItem.title,
+                text = foodItem.name,
                 fontSize = 23.sp,
                 fontWeight = FontWeight.W900,
                 color = colorResource(R.color.gray_item_title),
