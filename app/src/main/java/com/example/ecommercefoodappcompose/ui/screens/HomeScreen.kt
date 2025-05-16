@@ -59,10 +59,8 @@ fun HomeScreen(
     val foodItems = foodViewModel.foodItems.observeAsState(initial = emptyList())
     val filteredFoodItems = foodViewModel.filteredFoodItems.observeAsState(initial = emptyList())
     val isLoading = foodViewModel.isLoading.observeAsState(initial = false)
-    val isSearching = foodViewModel.isSearching.observeAsState(initial = false)
     val showLoading = rememberSaveable { mutableStateOf(false) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
-    val hasSearched = rememberSaveable { mutableStateOf(false) }
     val minLoadingTime = 1000L
     var loadingStartTime = rememberSaveable { mutableLongStateOf(0L) }
     val filters = listOf(
@@ -91,8 +89,7 @@ fun HomeScreen(
     } else {
         val displayedFoodList = remember(searchQuery, filteredFoodItems.value, foodItems.value) {
             when {
-                hasSearched.value && searchQuery.isNotEmpty() &&
-                    filteredFoodItems.value.isEmpty() -> listOf()
+                searchQuery.isNotEmpty() && filteredFoodItems.value.isEmpty() -> listOf()
                 searchQuery.isNotEmpty() -> filteredFoodItems.value
                 else -> foodItems.value
             }
@@ -138,9 +135,7 @@ fun HomeScreen(
                         .padding(paddingValues)
                 ) {
                     SearchBar(
-                        searchQuery = searchQuery,
-                        onQueryChanged = { searchQuery = it },
-                        hasSearched = hasSearched,
+                        onQuerySearched = { searchQuery = it },
                         viewModel = foodViewModel,
                         modifier = Modifier
                             .padding(horizontal = 20.dp)
@@ -172,11 +167,7 @@ fun HomeScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = if (hasSearched.value && isSearching.value) {
-                                    ""
-                                } else {
-                                    "No results!"
-                                },
+                                text = "No results!",
                                 fontSize = 30.sp,
                                 textAlign = TextAlign.Center,
                                 style = AppTypography.headlineMedium,

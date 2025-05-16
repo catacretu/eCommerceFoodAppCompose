@@ -16,8 +16,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -39,28 +37,23 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
-    searchQuery: String,
-    onQueryChanged: (String) -> Unit,
-    hasSearched: MutableState<Boolean>,
+    onQuerySearched: (String) -> Unit,
     viewModel: FoodViewModel,
     modifier: Modifier
 ) {
+    var internalQuery by remember { mutableStateOf("") }
     val isSearching by viewModel.isSearching.observeAsState(false)
     var debounceJob by remember { mutableStateOf<Job?>(null) }
 
-    LaunchedEffect(Unit) {
-        hasSearched.value = false
-    }
-
     OutlinedTextField(
-        value = searchQuery,
+        value = internalQuery,
         onValueChange = { newText ->
-            onQueryChanged(newText)
-            hasSearched.value = newText.isNotBlank()
+            internalQuery = newText
             debounceJob?.cancel()
             debounceJob = CoroutineScope(Dispatchers.Main).launch {
-                delay(500)
+                delay(1000)
                 viewModel.searchFoodItems(newText)
+                onQuerySearched(newText)
             }
         },
         modifier = modifier
@@ -71,7 +64,7 @@ fun SearchBar(
             if (isSearching) {
                 CircularProgressIndicator(modifier = Modifier.size(24.dp))
             } else {
-                IconButton(onClick = { viewModel.searchFoodItems(searchQuery) }) {
+                IconButton(onClick = { viewModel.searchFoodItems(internalQuery) }) {
                     Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
                 }
             }
