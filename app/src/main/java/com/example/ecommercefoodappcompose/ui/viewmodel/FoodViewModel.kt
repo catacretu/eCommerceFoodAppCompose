@@ -29,6 +29,8 @@ class FoodViewModel @Inject constructor(
 
     private val _selectedFoodItem = MutableLiveData<FoodItem>()
     val selectedFoodItem: LiveData<FoodItem> = _selectedFoodItem
+    var selectedFilter by mutableStateOf("")
+        private set
     var shippingDetailsState by mutableStateOf(ShippingDetailsItem())
         private set
 
@@ -94,6 +96,7 @@ class FoodViewModel @Inject constructor(
     }
 
     fun filterFoodItems(category: String) {
+        selectedFilter = category
         val filteredList = foodItems.value?.filter { foodItem ->
             foodItem.category == category
         } ?: emptyList()
