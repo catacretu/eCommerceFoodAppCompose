@@ -8,6 +8,7 @@ class FoodItem(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     val name: String,
+    val category: String,
     val price: String,
     val description: String,
     val imageUrl: String,

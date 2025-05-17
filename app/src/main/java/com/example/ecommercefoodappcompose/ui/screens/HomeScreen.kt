@@ -70,7 +70,7 @@ fun HomeScreen(
         "Dairy" to Icons.Default.Lock,
         "Others" to Icons.Default.Lock
     )
-    val selectedFilter = rememberSaveable { mutableStateOf("Vegetables") }
+    val selectedFilter = rememberSaveable { mutableStateOf("") }
 
     HandleLoadingState(
         isLoading,
@@ -87,10 +87,16 @@ fun HomeScreen(
             CircularProgressIndicator()
         }
     } else {
-        val displayedFoodList = remember(searchQuery, filteredFoodItems.value, foodItems.value) {
+        val displayedFoodList = remember(
+            searchQuery,
+            selectedFilter.value,
+            filteredFoodItems.value,
+            foodItems.value
+        ) {
             when {
                 searchQuery.isNotEmpty() && filteredFoodItems.value.isEmpty() -> listOf()
-                searchQuery.isNotEmpty() -> filteredFoodItems.value
+                searchQuery.isNotEmpty() || selectedFilter.value.isNotEmpty() ->
+                    filteredFoodItems.value
                 else -> foodItems.value
             }
         }
@@ -153,7 +159,15 @@ fun HomeScreen(
                                 icon = icon,
                                 label = label,
                                 isSelected = selectedFilter.value == label,
-                                onClick = { selectedFilter.value = label }
+                                onClick = {
+                                    if (selectedFilter.value == label) {
+                                        selectedFilter.value = ""
+                                        foodViewModel.filterFoodItems("")
+                                    } else {
+                                        selectedFilter.value = label
+                                        foodViewModel.filterFoodItems(label)
+                                    }
+                                }
                             )
                         }
                     }
