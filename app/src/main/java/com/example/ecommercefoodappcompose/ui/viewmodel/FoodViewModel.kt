@@ -113,7 +113,6 @@ class FoodViewModel @Inject constructor(
         _filteredFoodItems.value = filtered
     }
 
-
     fun addCartItem(foodItem: FoodItem) {
         val currentList = _cartItems.value?.toMutableList() ?: mutableListOf()
 
