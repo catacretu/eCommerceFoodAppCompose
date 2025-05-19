@@ -7,8 +7,11 @@ import com.example.ecommercefoodappcompose.BASE_URL
 import com.example.ecommercefoodappcompose.data.database.FoodDatabase
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
 import com.example.ecommercefoodappcompose.data.remote.FoodService
+import com.example.ecommercefoodappcompose.data.remote.SuggestionService
 import com.example.ecommercefoodappcompose.data.repository.FoodRepository
 import com.example.ecommercefoodappcompose.data.repository.FoodRepositoryImpl
+import com.example.ecommercefoodappcompose.data.repository.SuggestionRepository
+import com.example.ecommercefoodappcompose.data.repository.SuggestionRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,6 +50,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideSuggestionService(retrofit: Retrofit): SuggestionService {
+        return retrofit.create(SuggestionService::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideDatabase(@ApplicationContext context: Context): FoodDatabase {
         return Room.databaseBuilder(
             context,
@@ -71,5 +80,14 @@ object AppModule {
         context: Context
     ): FoodRepository {
         return FoodRepositoryImpl(foodService, foodDao, context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSuggestionRepository(
+        suggestionService: SuggestionService,
+        foodDao: FoodDAO
+    ): SuggestionRepository {
+        return SuggestionRepositoryImpl(suggestionService, foodDao)
     }
 }

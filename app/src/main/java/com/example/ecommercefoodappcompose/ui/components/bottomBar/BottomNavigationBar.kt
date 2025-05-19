@@ -19,6 +19,7 @@ fun BottomNavigationBar(
     val screens = listOf(
         BottomNavItem.Home,
         BottomNavItem.Cart,
+        BottomNavItem.AiSearch,
         BottomNavItem.Favourite,
         BottomNavItem.More
     )
@@ -49,7 +50,7 @@ fun BottomNavigationBar(
                     )
                 },
                 // colors = NavigationBarItemDefaults.colors(...)
-                alwaysShowLabel = true // Sau false dacă vrei să arăți eticheta doar la selectare
+                alwaysShowLabel = true
             )
         }
     }
