@@ -36,7 +36,7 @@ import com.example.ecommercefoodappcompose.R
 import com.example.ecommercefoodappcompose.ui.components.FilterItem
 import com.example.ecommercefoodappcompose.ui.components.FoodList
 import com.example.ecommercefoodappcompose.ui.components.HandleLoadingState
-import com.example.ecommercefoodappcompose.ui.components.SearchBar
+import com.example.ecommercefoodappcompose.ui.components.HomeSearchBar
 import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigationBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
@@ -129,7 +129,7 @@ fun HomeScreen(
                         .fillMaxSize()
                         .padding(paddingValues)
                 ) {
-                    SearchBar(
+                    HomeSearchBar(
                         viewModel = foodViewModel,
                         modifier = Modifier
                             .padding(horizontal = 20.dp)

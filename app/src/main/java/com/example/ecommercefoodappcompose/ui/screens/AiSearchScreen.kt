@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.ui.components.FoodList
+import com.example.ecommercefoodappcompose.ui.components.RecipeSearchBar
 import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigationBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
@@ -56,6 +57,15 @@ fun AiSearchScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            RecipeSearchBar(
+                searchQuery = suggestionViewModel.searchQuery,
+                onQueryChanged = { suggestionViewModel.searchQuery = it },
+                viewModel = suggestionViewModel,
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 20.dp)
+            )
+
             FoodList(
                 suggestionItems.value,
                 modifier = Modifier

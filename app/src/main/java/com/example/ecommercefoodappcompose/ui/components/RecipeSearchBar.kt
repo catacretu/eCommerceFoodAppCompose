@@ -24,36 +24,35 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.ecommercefoodappcompose.R
-import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
+import com.example.ecommercefoodappcompose.ui.viewmodel.SuggestionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeSearchBar(
-    viewModel: FoodViewModel,
+fun RecipeSearchBar(
+    searchQuery: String,
+    onQueryChanged: (String) -> Unit,
+    viewModel: SuggestionViewModel,
     modifier: Modifier
 ) {
-    val searchQuery = viewModel.searchQuery
-    val isSearching by viewModel.isSearching.observeAsState(false)
+    val isLoading by viewModel.isLoading.observeAsState(false)
 
     OutlinedTextField(
         value = searchQuery,
-        onValueChange = { newText ->
-            viewModel.updateSearchQuery(newText)
-        },
+        onValueChange = { onQueryChanged(it) },
         modifier = modifier
             .fillMaxWidth()
             .background(Color.White),
         shape = RoundedCornerShape(24.dp),
         trailingIcon = {
-            if (isSearching) {
+            if (isLoading) {
                 CircularProgressIndicator(modifier = Modifier.size(24.dp))
             } else {
-                IconButton(onClick = { viewModel.applyFilters() }) {
+                IconButton(onClick = { viewModel.searchRecipe(searchQuery) }) {
                     Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
                 }
             }
         },
-        placeholder = { Text(stringResource(R.string.search_bar_txt)) },
+        placeholder = { Text(stringResource(R.string.recpie_search_bar_txt)) },
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions.Default,
         colors = TextFieldDefaults.outlinedTextFieldColors(
