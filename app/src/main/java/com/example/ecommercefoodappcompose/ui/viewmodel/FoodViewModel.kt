@@ -26,10 +26,10 @@ class FoodViewModel @Inject constructor(
     val isLoading: LiveData<Boolean> = foodRepository.isLoading
     private val _isSearching = MutableLiveData<Boolean>()
     val isSearching: LiveData<Boolean> = _isSearching
-
     private val _selectedFoodItem = MutableLiveData<FoodItem>()
     val selectedFoodItem: LiveData<FoodItem> = _selectedFoodItem
-    var selectedFilter by mutableStateOf("")
+
+    var activeFilters by mutableStateOf<Set<String>>(emptySet())
         private set
     var shippingDetailsState by mutableStateOf(ShippingDetailsItem())
         private set
@@ -95,13 +95,24 @@ class FoodViewModel @Inject constructor(
         }
     }
 
-    fun filterFoodItems(category: String) {
-        selectedFilter = category
-        val filteredList = foodItems.value?.filter { foodItem ->
-            foodItem.category == category
-        } ?: emptyList()
-        _filteredFoodItems.value = filteredList
+    fun toggleCategoryFilter(category: String) {
+        activeFilters = if (category in activeFilters) {
+            activeFilters - category
+        } else {
+            activeFilters + category
+        }
+        applyCategoryFilters()
     }
+
+    private fun applyCategoryFilters() {
+        val filtered = if (activeFilters.isEmpty()) {
+            foodItems.value ?: emptyList()
+        } else {
+            foodItems.value?.filter { it.category in activeFilters } ?: emptyList()
+        }
+        _filteredFoodItems.value = filtered
+    }
+
 
     fun addCartItem(foodItem: FoodItem) {
         val currentList = _cartItems.value?.toMutableList() ?: mutableListOf()

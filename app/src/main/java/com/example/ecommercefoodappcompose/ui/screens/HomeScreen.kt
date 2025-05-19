@@ -88,13 +88,13 @@ fun HomeScreen(
     } else {
         val displayedFoodList = remember(
             searchQuery,
-            foodViewModel.selectedFilter,
+            foodViewModel.activeFilters,
             filteredFoodItems.value,
             foodItems.value
         ) {
             when {
                 searchQuery.isNotEmpty() && filteredFoodItems.value.isEmpty() -> listOf()
-                searchQuery.isNotEmpty() || foodViewModel.selectedFilter.isNotEmpty() ->
+                searchQuery.isNotEmpty() || foodViewModel.activeFilters.isNotEmpty() ->
                     filteredFoodItems.value
                 else -> foodItems.value
             }
@@ -157,13 +157,9 @@ fun HomeScreen(
                             FilterItem(
                                 icon = icon,
                                 label = label,
-                                isSelected = foodViewModel.selectedFilter == label,
+                                isSelected = label in foodViewModel.activeFilters,
                                 onClick = {
-                                    if (foodViewModel.selectedFilter == label) {
-                                        foodViewModel.filterFoodItems("")
-                                    } else {
-                                        foodViewModel.filterFoodItems(label)
-                                    }
+                                    foodViewModel.toggleCategoryFilter(label)
                                 }
                             )
                         }
