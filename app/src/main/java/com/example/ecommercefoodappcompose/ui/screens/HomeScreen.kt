@@ -23,13 +23,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,7 +58,7 @@ fun HomeScreen(
     val filteredFoodItems = foodViewModel.filteredFoodItems.observeAsState(initial = emptyList())
     val isLoading = foodViewModel.isLoading.observeAsState(initial = false)
     val showLoading = rememberSaveable { mutableStateOf(false) }
-    var searchQuery by rememberSaveable { mutableStateOf("") }
+    val searchQuery = foodViewModel.searchQuery
     val minLoadingTime = 1000L
     var loadingStartTime = rememberSaveable { mutableLongStateOf(0L) }
     val filters = listOf(
@@ -78,6 +76,11 @@ fun HomeScreen(
         loadingStartTime
     )
 
+    LaunchedEffect(Unit) {
+        foodViewModel.loadCartItems(activity)
+        foodViewModel.loadFavouritesItems(activity)
+    }
+
     if (showLoading.value) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -86,18 +89,12 @@ fun HomeScreen(
             CircularProgressIndicator()
         }
     } else {
-        val displayedFoodList = remember(
-            searchQuery,
-            foodViewModel.activeFilters,
-            filteredFoodItems.value,
-            foodItems.value
+        val displayedFoodList = if (
+            searchQuery.isNotEmpty() || foodViewModel.activeFilters.isNotEmpty()
         ) {
-            when {
-                searchQuery.isNotEmpty() && filteredFoodItems.value.isEmpty() -> listOf()
-                searchQuery.isNotEmpty() || foodViewModel.activeFilters.isNotEmpty() ->
-                    filteredFoodItems.value
-                else -> foodItems.value
-            }
+            filteredFoodItems.value
+        } else {
+            foodItems.value
         }
         if (foodItems.value.isEmpty()) {
             Column(
@@ -113,8 +110,6 @@ fun HomeScreen(
                 )
             }
         } else {
-            foodViewModel.loadCartItems(activity)
-            foodViewModel.loadFavouritesItems(activity)
             Scaffold(
                 topBar = {
                     TopAppBar(
@@ -140,7 +135,6 @@ fun HomeScreen(
                         .padding(paddingValues)
                 ) {
                     SearchBar(
-                        onQuerySearched = { searchQuery = it },
                         viewModel = foodViewModel,
                         modifier = Modifier
                             .padding(horizontal = 20.dp)

@@ -18,9 +18,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -28,33 +25,20 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.ecommercefoodappcompose.R
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
-    onQuerySearched: (String) -> Unit,
     viewModel: FoodViewModel,
     modifier: Modifier
 ) {
-    var internalQuery by remember { mutableStateOf("") }
+    val searchQuery = viewModel.searchQuery
     val isSearching by viewModel.isSearching.observeAsState(false)
-    var debounceJob by remember { mutableStateOf<Job?>(null) }
 
     OutlinedTextField(
-        value = internalQuery,
+        value = searchQuery,
         onValueChange = { newText ->
-            internalQuery = newText
-            debounceJob?.cancel()
-            debounceJob = CoroutineScope(Dispatchers.Main).launch {
-                delay(1000)
-                viewModel.searchFoodItems(newText)
-                onQuerySearched(newText)
-            }
+            viewModel.updateSearchQuery(newText)
         },
         modifier = modifier
             .fillMaxWidth()
@@ -64,7 +48,7 @@ fun SearchBar(
             if (isSearching) {
                 CircularProgressIndicator(modifier = Modifier.size(24.dp))
             } else {
-                IconButton(onClick = { viewModel.searchFoodItems(internalQuery) }) {
+                IconButton(onClick = { viewModel.applyFilters() }) {
                     Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
                 }
             }

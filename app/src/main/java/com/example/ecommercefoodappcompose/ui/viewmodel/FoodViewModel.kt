@@ -14,6 +14,7 @@ import com.example.ecommercefoodappcompose.data.local.model.ShippingDetailsItem
 import com.example.ecommercefoodappcompose.data.repository.FoodRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,6 +34,9 @@ class FoodViewModel @Inject constructor(
         private set
     var shippingDetailsState by mutableStateOf(ShippingDetailsItem())
         private set
+    var searchQuery by mutableStateOf("")
+        private set
+    private var searchJob: Job? = null
 
     val foodItems: LiveData<List<FoodItem>> = foodRepository.getAllFoodItems()
     private val _filteredFoodItems = MutableLiveData<List<FoodItem>>()
@@ -83,34 +87,29 @@ class FoodViewModel @Inject constructor(
         }
     }
 
-    fun searchFoodItems(query: String) {
-        _isSearching.value = true
-        viewModelScope.launch {
-            delay(500)
-            val filteredList = foodItems.value?.filter { foodItem ->
-                foodItem.name.contains(query, ignoreCase = true)
-            } ?: emptyList()
-            _filteredFoodItems.value = filteredList
-            _isSearching.value = false
-        }
-    }
-
     fun toggleCategoryFilter(category: String) {
         activeFilters = if (category in activeFilters) {
             activeFilters - category
         } else {
             activeFilters + category
         }
-        applyCategoryFilters()
+        applyFilters()
     }
 
-    private fun applyCategoryFilters() {
-        val filtered = if (activeFilters.isEmpty()) {
-            foodItems.value ?: emptyList()
-        } else {
-            foodItems.value?.filter { it.category in activeFilters } ?: emptyList()
+    fun applyFilters() {
+        _isSearching.value = true
+        val allItems = foodItems.value ?: emptyList()
+        viewModelScope.launch {
+            delay(if (searchQuery.isEmpty()) 0 else 500)
+            val filtered = allItems.filter { item ->
+                val matchesCategory = activeFilters.isEmpty() || item.category in activeFilters
+                val matchesSearch =
+                    searchQuery.isBlank() || item.name.contains(searchQuery, ignoreCase = true)
+                matchesCategory && matchesSearch
+            }
+            _filteredFoodItems.value = filtered
+            _isSearching.value = false
         }
-        _filteredFoodItems.value = filtered
     }
 
     fun addCartItem(foodItem: FoodItem) {
@@ -136,6 +135,15 @@ class FoodViewModel @Inject constructor(
         } else {
             currentList.remove(foodItem)
             _favouritesItems.value = currentList
+        }
+    }
+
+    fun updateSearchQuery(newQuery: String) {
+        searchQuery = newQuery
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(500)
+            applyFilters()
         }
     }
 
