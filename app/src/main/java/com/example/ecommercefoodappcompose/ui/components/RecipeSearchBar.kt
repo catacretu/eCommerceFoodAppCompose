@@ -24,14 +24,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.ecommercefoodappcompose.R
-import com.example.ecommercefoodappcompose.ui.viewmodel.SuggestionViewModel
+import com.example.ecommercefoodappcompose.ui.viewmodel.RecipeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeSearchBar(
     searchQuery: String,
     onQueryChanged: (String) -> Unit,
-    viewModel: SuggestionViewModel,
+    viewModel: RecipeViewModel,
     modifier: Modifier
 ) {
     val isLoading by viewModel.isLoading.observeAsState(false)

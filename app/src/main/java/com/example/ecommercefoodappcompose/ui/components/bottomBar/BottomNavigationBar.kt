@@ -19,7 +19,7 @@ fun BottomNavigationBar(
     val screens = listOf(
         BottomNavItem.Home,
         BottomNavItem.Cart,
-        BottomNavItem.AiSearch,
+        BottomNavItem.Recipes,
         BottomNavItem.Favourite,
         BottomNavItem.More
     )

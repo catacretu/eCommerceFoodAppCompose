@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.ecommercefoodappcompose.ui.screens.AiSearchScreen
 import com.example.ecommercefoodappcompose.ui.screens.CartScreen
 import com.example.ecommercefoodappcompose.ui.screens.CheckoutScreen
 import com.example.ecommercefoodappcompose.ui.screens.FavouritesScreen
@@ -20,10 +19,11 @@ import com.example.ecommercefoodappcompose.ui.screens.FoodItemDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.HomeScreen
 import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
 import com.example.ecommercefoodappcompose.ui.screens.MoreScreen
+import com.example.ecommercefoodappcompose.ui.screens.RecipeScreen
 import com.example.ecommercefoodappcompose.ui.screens.ShippingScreen
 import com.example.ecommercefoodappcompose.ui.screens.SplashScreen
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
-import com.example.ecommercefoodappcompose.ui.viewmodel.SuggestionViewModel
+import com.example.ecommercefoodappcompose.ui.viewmodel.RecipeViewModel
 
 @Composable
 fun NavigationGraph(
@@ -31,7 +31,7 @@ fun NavigationGraph(
     activity: Activity,
     context: Context,
     foodViewModel: FoodViewModel,
-    suggestionViewModel: SuggestionViewModel
+    recipeViewModel: RecipeViewModel
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -83,10 +83,10 @@ fun NavigationGraph(
             )
         }
 
-        composable("ai_search") {
-            AiSearchScreen(
+        composable("recipes_screen") {
+            RecipeScreen(
                 navController,
-                suggestionViewModel,
+                recipeViewModel,
                 foodViewModel
             )
         }

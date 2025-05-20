@@ -4,17 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
-import com.example.ecommercefoodappcompose.data.remote.SuggestionService
+import com.example.ecommercefoodappcompose.data.remote.RecipeService
 import javax.inject.Inject
 
-class SuggestionRepositoryImpl @Inject constructor(
-    private val suggestionService: SuggestionService,
+class RecipeRepositoryImpl @Inject constructor(
+    private val recipeService: RecipeService,
     private val foodDAO: FoodDAO
-) : SuggestionRepository {
+) : RecipeRepository {
 
     val allFoodItems: LiveData<List<FoodItem>> = foodDAO.getAllFoodItems()
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    override suspend fun fetchRecipe(query: String) {}
+    override suspend fun fetchRecipes(query: String) {}
 }

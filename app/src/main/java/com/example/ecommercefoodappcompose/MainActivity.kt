@@ -12,7 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ecommercefoodappcompose.ui.components.NavigationGraph
 import com.example.ecommercefoodappcompose.ui.theme.ECommerceFoodAppComposeTheme
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
-import com.example.ecommercefoodappcompose.ui.viewmodel.SuggestionViewModel
+import com.example.ecommercefoodappcompose.ui.viewmodel.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val foodViewModel: FoodViewModel = hiltViewModel()
-            val suggestionViewModel: SuggestionViewModel = hiltViewModel()
+            val recipeViewModel: RecipeViewModel = hiltViewModel()
             ECommerceFoodAppComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavigationGraph(
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                         activity = this@MainActivity,
                         context = this,
                         foodViewModel = foodViewModel,
-                        suggestionViewModel = suggestionViewModel
+                        recipeViewModel = recipeViewModel
                     )
                 }
             }

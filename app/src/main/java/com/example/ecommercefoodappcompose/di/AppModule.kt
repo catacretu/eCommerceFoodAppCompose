@@ -7,11 +7,11 @@ import com.example.ecommercefoodappcompose.BASE_URL
 import com.example.ecommercefoodappcompose.data.database.FoodDatabase
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
 import com.example.ecommercefoodappcompose.data.remote.FoodService
-import com.example.ecommercefoodappcompose.data.remote.SuggestionService
+import com.example.ecommercefoodappcompose.data.remote.RecipeService
 import com.example.ecommercefoodappcompose.data.repository.FoodRepository
 import com.example.ecommercefoodappcompose.data.repository.FoodRepositoryImpl
-import com.example.ecommercefoodappcompose.data.repository.SuggestionRepository
-import com.example.ecommercefoodappcompose.data.repository.SuggestionRepositoryImpl
+import com.example.ecommercefoodappcompose.data.repository.RecipeRepository
+import com.example.ecommercefoodappcompose.data.repository.RecipeRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,8 +50,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSuggestionService(retrofit: Retrofit): SuggestionService {
-        return retrofit.create(SuggestionService::class.java)
+    fun provideRecipeService(retrofit: Retrofit): RecipeService {
+        return retrofit.create(RecipeService::class.java)
     }
 
     @Provides
@@ -84,10 +84,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSuggestionRepository(
-        suggestionService: SuggestionService,
+    fun provideRecipeRepository(
+        recipeService: RecipeService,
         foodDao: FoodDAO
-    ): SuggestionRepository {
-        return SuggestionRepositoryImpl(suggestionService, foodDao)
+    ): RecipeRepository {
+        return RecipeRepositoryImpl(recipeService, foodDao)
     }
 }

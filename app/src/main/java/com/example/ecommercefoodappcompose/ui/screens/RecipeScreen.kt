@@ -20,16 +20,16 @@ import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigat
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
-import com.example.ecommercefoodappcompose.ui.viewmodel.SuggestionViewModel
+import com.example.ecommercefoodappcompose.ui.viewmodel.RecipeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AiSearchScreen(
+fun RecipeScreen(
     navController: NavController,
-    suggestionViewModel: SuggestionViewModel,
+    recipeViewModel: RecipeViewModel,
     foodViewModel: FoodViewModel
 ) {
-    val suggestionItems = suggestionViewModel.suggestionItems.observeAsState(initial = emptyList())
+    val recipesItems = recipeViewModel.recipeItems.observeAsState(initial = emptyList())
     Scaffold(
         topBar = {
             TopAppBar(
@@ -58,16 +58,16 @@ fun AiSearchScreen(
                 .padding(paddingValues)
         ) {
             RecipeSearchBar(
-                searchQuery = suggestionViewModel.searchQuery,
-                onQueryChanged = { suggestionViewModel.searchQuery = it },
-                viewModel = suggestionViewModel,
+                searchQuery = recipeViewModel.searchQuery,
+                onQueryChanged = { recipeViewModel.searchQuery = it },
+                viewModel = recipeViewModel,
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
                     .padding(top = 20.dp)
             )
 
             FoodList(
-                suggestionItems.value,
+                recipesItems.value,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 30.dp)

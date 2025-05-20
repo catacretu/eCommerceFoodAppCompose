@@ -7,22 +7,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
-import com.example.ecommercefoodappcompose.data.repository.SuggestionRepositoryImpl
+import com.example.ecommercefoodappcompose.data.repository.RecipeRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SuggestionViewModel @Inject constructor(
-    private val suggestionRepository: SuggestionRepositoryImpl
+class RecipeViewModel @Inject constructor(
+    private val recipeRepository: RecipeRepositoryImpl
 ) : ViewModel() {
-    val suggestionItems: LiveData<List<FoodItem>> = suggestionRepository.allFoodItems
-    val isLoading: LiveData<Boolean> = suggestionRepository.isLoading
+    val recipeItems: LiveData<List<FoodItem>> = recipeRepository.allFoodItems
+    val isLoading: LiveData<Boolean> = recipeRepository.isLoading
     var searchQuery by mutableStateOf("")
 
     fun searchRecipe(query: String) {
         viewModelScope.launch {
-            suggestionRepository.fetchRecipe(query)
+            recipeRepository.fetchRecipes(query)
         }
     }
 }

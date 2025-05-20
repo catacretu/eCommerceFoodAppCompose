@@ -7,11 +7,11 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface SuggestionService {
+interface RecipeService {
     @Headers(
         "Content-Type: application/json",
         "Authorization: Bearer $OPEN_API_KEY"
     )
     @POST("v1/chat/completions")
-    suspend fun getSuggestions(@Body request: ChatRequest): ChatResponse
+    suspend fun getRecipes(@Body request: ChatRequest): ChatResponse
 }
