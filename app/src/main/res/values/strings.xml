@@ -6,4 +6,6 @@
     <string name="product_added_successfully_msg">The product has been added successfully!</string>
     <string name="search_bar_txt">What are you shopping for today?</string>
     <string name="recpie_search_bar_txt">Search a recipe</string>
+    <string name="no_recipes_available_txt">There are no recipes available.</string>
+    <string name="no_favorites_available_txt">There are no favorites available.</string>
 </resources>

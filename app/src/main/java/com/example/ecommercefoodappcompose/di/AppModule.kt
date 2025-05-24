@@ -4,8 +4,10 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.ecommercefoodappcompose.BASE_URL
+import com.example.ecommercefoodappcompose.OPEN_URL
 import com.example.ecommercefoodappcompose.data.database.FoodDatabase
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
+import com.example.ecommercefoodappcompose.data.local.dao.RecipeDAO
 import com.example.ecommercefoodappcompose.data.remote.FoodService
 import com.example.ecommercefoodappcompose.data.remote.RecipeService
 import com.example.ecommercefoodappcompose.data.repository.FoodRepository
@@ -20,6 +22,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -34,7 +37,18 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @FoodApi
+    fun provideFoodRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(OkHttpClient().newBuilder().build())
@@ -44,13 +58,24 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFoodService(retrofit: Retrofit): FoodService {
+    @RecipeApi
+    fun provideRecipeRetrofit(client: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(OPEN_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFoodService(@FoodApi retrofit: Retrofit): FoodService {
         return retrofit.create(FoodService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideRecipeService(retrofit: Retrofit): RecipeService {
+    fun provideRecipeService(@RecipeApi retrofit: Retrofit): RecipeService {
         return retrofit.create(RecipeService::class.java)
     }
 
@@ -74,6 +99,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideRecipeDao(database: FoodDatabase): RecipeDAO {
+        return database.recipeDao()
+    }
+
+    @Provides
+    @Singleton
     fun provideFoodRepository(
         foodService: FoodService,
         foodDao: FoodDAO,
@@ -86,8 +117,9 @@ object AppModule {
     @Singleton
     fun provideRecipeRepository(
         recipeService: RecipeService,
+        recipeDao: RecipeDAO,
         foodDao: FoodDAO
     ): RecipeRepository {
-        return RecipeRepositoryImpl(recipeService, foodDao)
+        return RecipeRepositoryImpl(recipeService, recipeDao, foodDao)
     }
 }

@@ -38,7 +38,9 @@ fun RecipeSearchBar(
 
     OutlinedTextField(
         value = searchQuery,
-        onValueChange = { onQueryChanged(it) },
+        onValueChange = {
+            onQueryChanged(it)
+        },
         modifier = modifier
             .fillMaxWidth()
             .background(Color.White),
@@ -47,7 +49,7 @@ fun RecipeSearchBar(
             if (isLoading) {
                 CircularProgressIndicator(modifier = Modifier.size(24.dp))
             } else {
-                IconButton(onClick = { viewModel.searchRecipe(searchQuery) }) {
+                IconButton(onClick = { viewModel.searchRecipes(searchQuery) }) {
                     Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
                 }
             }

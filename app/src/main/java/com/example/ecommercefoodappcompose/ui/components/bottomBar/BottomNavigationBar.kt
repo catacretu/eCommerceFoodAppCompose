@@ -35,10 +35,9 @@ fun BottomNavigationBar(
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same screen
+                        // Prevent to create new screen if already exist
                         launchSingleTop = true
-                        // Restore state when reselecting a previously selected screen
+//                         Restore state screen when select a previously visited screen
                         restoreState = true
                     }
                 },

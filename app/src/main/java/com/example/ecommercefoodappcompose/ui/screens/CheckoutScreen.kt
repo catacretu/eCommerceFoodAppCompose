@@ -106,8 +106,8 @@ fun CheckoutScreen(
             foodViewModel,
             navController,
             modifier = Modifier
-                .verticalScroll(verticalScrollState)
-                .height(370.dp),
+                .height(370.dp)
+                .verticalScroll(verticalScrollState),
             totalAmount = totalAmount,
             isCheckoutScreen = true
         )
