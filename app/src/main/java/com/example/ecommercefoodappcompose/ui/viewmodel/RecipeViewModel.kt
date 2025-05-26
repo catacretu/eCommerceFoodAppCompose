@@ -25,6 +25,7 @@ class RecipeViewModel @Inject constructor(
     val favouriteRecipes: LiveData<List<RecipeItem>> = recipeRepository.getAllRecipes()
     private val _selectedRecipe = MutableLiveData<RecipeItem>()
     val selectedRecipe: LiveData<RecipeItem> = _selectedRecipe
+    val isFavourite = recipeRepository.isFavourite
 
     init {
         getAllFavouriteRecipes()
@@ -48,6 +49,12 @@ class RecipeViewModel @Inject constructor(
     fun toggleFavorite(recipe: RecipeItem) {
         viewModelScope.launch {
             recipeRepository.toggleFavorite(recipe)
+        }
+    }
+
+    fun loadFavouriteStatus(id: Int) {
+        viewModelScope.launch {
+            isFavourite.value = recipeRepository.isRecipeFavourite(id)
         }
     }
 

@@ -17,4 +17,7 @@ interface RecipeDAO {
 
     @Query("DELETE FROM recipes WHERE id = :recipeId")
     suspend fun deleteRecipeById(recipeId: Int)
+
+    @Query("SELECT isFavourite FROM recipes WHERE id = :recipeId LIMIT 1")
+    suspend fun isRecipeFavourite(recipeId: Int): Boolean
 }

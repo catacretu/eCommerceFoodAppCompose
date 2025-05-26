@@ -1,5 +1,6 @@
 package com.example.ecommercefoodappcompose.data.repository
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
@@ -27,6 +28,8 @@ class RecipeRepositoryImpl @Inject constructor(
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
+    var isFavourite = mutableStateOf<Boolean?>(null)
+        private set
 
     override suspend fun fetchRecipes(query: String, additionalSearch: Boolean) {
         val noRecipes = 3
@@ -95,8 +98,10 @@ class RecipeRepositoryImpl @Inject constructor(
 
         if (recipe.isFavourite) {
             deleteRecipeById(recipe.id)
+            isFavourite.value = false
         } else {
             insertRecipe(updatedRecipe)
+            isFavourite.value = true
         }
         _recipes.value = _recipes.value?.map { if (it.title == recipe.title) updatedRecipe else it }
             ?: emptyList()
@@ -119,6 +124,12 @@ class RecipeRepositoryImpl @Inject constructor(
     private suspend fun deleteRecipeById(recipeId: Int) {
         withContext(Dispatchers.IO) {
             recipeDao.deleteRecipeById(recipeId)
+        }
+    }
+
+    suspend fun isRecipeFavourite(recipeId: Int): Boolean {
+        return withContext(Dispatchers.IO) {
+            recipeDao.isRecipeFavourite(recipeId)
         }
     }
 }

@@ -19,6 +19,7 @@ import com.example.ecommercefoodappcompose.ui.screens.FoodItemDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.HomeScreen
 import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
 import com.example.ecommercefoodappcompose.ui.screens.MoreScreen
+import com.example.ecommercefoodappcompose.ui.screens.RecipeDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.RecipeScreen
 import com.example.ecommercefoodappcompose.ui.screens.ShippingScreen
 import com.example.ecommercefoodappcompose.ui.screens.SplashScreen
@@ -89,6 +90,16 @@ fun NavigationGraph(
                 recipeViewModel,
                 foodViewModel
             )
+        }
+
+        composable("recipe_item_details") {
+            val selectedRecipe by recipeViewModel.selectedRecipe.observeAsState()
+
+            if (selectedRecipe != null) {
+                RecipeDetailsScreen(selectedRecipe!!, recipeViewModel) {
+                    navController.popBackStack()
+                }
+            }
         }
 
         composable("favourites_screen") {

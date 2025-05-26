@@ -112,7 +112,7 @@ fun RecipeScreen(
                     recipeList = displayedRecipes.value,
                     onRecipeSelected = { selectedRecipe ->
                         recipeViewModel.selectRecipe(selectedRecipe)
-                        navController.navigate("recipe_details")
+                        navController.navigate("recipe_item_details")
                     },
                     onFavoriteClick = { recipe ->
                         recipeViewModel.toggleFavorite(recipe)
