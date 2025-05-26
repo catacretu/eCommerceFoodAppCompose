@@ -20,7 +20,7 @@ import com.example.ecommercefoodappcompose.ui.screens.HomeScreen
 import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
 import com.example.ecommercefoodappcompose.ui.screens.MoreScreen
 import com.example.ecommercefoodappcompose.ui.screens.RecipeDetailsScreen
-import com.example.ecommercefoodappcompose.ui.screens.RecipeScreen
+import com.example.ecommercefoodappcompose.ui.screens.RecipesScreen
 import com.example.ecommercefoodappcompose.ui.screens.ShippingScreen
 import com.example.ecommercefoodappcompose.ui.screens.SplashScreen
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
@@ -85,10 +85,10 @@ fun NavigationGraph(
         }
 
         composable("recipes_screen") {
-            RecipeScreen(
+            RecipesScreen(
                 navController,
-                recipeViewModel,
-                foodViewModel
+                foodViewModel,
+                recipeViewModel
             )
         }
 

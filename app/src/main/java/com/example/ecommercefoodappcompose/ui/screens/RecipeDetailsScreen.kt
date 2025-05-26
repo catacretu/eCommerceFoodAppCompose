@@ -3,9 +3,9 @@ package com.example.ecommercefoodappcompose.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -43,18 +43,18 @@ fun RecipeDetailsScreen(
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
-            .fillMaxSize()
+            .navigationBarsPadding()
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 55.dp),
+                .padding(horizontal = 12.dp)
+                .padding(top = 45.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IconButton(
                 onClick = { onBackClick() },
                 modifier = Modifier
-                    .padding(start = 15.dp)
                     .size(32.dp)
             ) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -62,7 +62,6 @@ fun RecipeDetailsScreen(
             IconButton(
                 onClick = { recipeViewModel.toggleFavorite(recipe) },
                 modifier = Modifier
-                    .padding(end = 15.dp)
                     .size(32.dp)
             ) {
                 Icon(
@@ -78,6 +77,8 @@ fun RecipeDetailsScreen(
             contentDescription = "Recipe Image",
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 10.dp)
+                .padding(horizontal = 20.dp)
                 .height(250.dp),
             placeholder = painterResource(R.drawable.food_placeholder),
             error = painterResource(R.drawable.food_placeholder)
@@ -86,33 +87,45 @@ fun RecipeDetailsScreen(
         Text(
             text = recipe.title,
             fontWeight = FontWeight.Bold,
-            fontSize = 22.sp
+            fontSize = 22.sp,
+            modifier = Modifier
+                .padding(top = 15.dp)
+                .padding(start = 20.dp)
         )
-
         val formattedTime = recipe.time.replace(Regex("\\D+"), "") + " min."
 
         Text(
             text = formattedTime,
             color = Color.Gray,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            modifier = Modifier.padding(start = 20.dp)
         )
 
         Text(
             text = "Ingredients:",
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+                .padding(start = 20.dp)
         )
 
         recipe.ingredients.forEach {
-            Text(text = "• $it", fontSize = 16.sp)
+            Text(text = "• $it", fontSize = 16.sp, modifier = Modifier.padding(start = 20.dp))
         }
         Text(
             text = "Instructions:",
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+                .padding(start = 20.dp)
         )
-        Text(text = recipe.instructions, fontSize = 16.sp)
+        Text(
+            text = recipe.instructions,
+            fontSize = 16.sp,
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+        )
     }
 }

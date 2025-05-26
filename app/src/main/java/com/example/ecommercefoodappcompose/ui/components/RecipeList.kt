@@ -28,6 +28,7 @@ fun RecipeList(
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
+            .padding(bottom = 20.dp)
             .padding(horizontal = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -47,7 +48,7 @@ fun RecipeList(
                 Button(
                     onClick = { onDislikeClicked() },
                     modifier = Modifier
-                        .padding(top = 16.dp, bottom = 20.dp)
+                        .padding(top = 16.dp)
                         .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = inversePrimaryDark)
                 ) {
