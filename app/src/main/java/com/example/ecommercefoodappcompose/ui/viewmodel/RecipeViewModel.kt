@@ -22,7 +22,7 @@ class RecipeViewModel @Inject constructor(
     var shouldClearResults by mutableStateOf(false)
 
     val recipeItems: LiveData<List<RecipeItem>> = recipeRepository.recipes
-    val favouriteRecipes: LiveData<List<RecipeItem>> = recipeRepository.getAllRecipes()
+    val favouriteRecipes: LiveData<List<RecipeItem>> = recipeRepository.getFavouriteRecipes()
     val defaultRecipes: LiveData<List<RecipeItem>> = recipeRepository.getDefaultRecipes()
     private val _selectedRecipe = MutableLiveData<RecipeItem>()
     val selectedRecipe: LiveData<RecipeItem> = _selectedRecipe

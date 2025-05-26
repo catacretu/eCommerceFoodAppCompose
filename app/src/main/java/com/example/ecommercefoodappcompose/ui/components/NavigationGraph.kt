@@ -101,7 +101,8 @@ fun NavigationGraph(
                     type = NavType.BoolType
                     defaultValue = false
                 }
-            )) {backStackEntry ->
+            )
+        ) { backStackEntry ->
             val isDefaultRecipe = backStackEntry.arguments?.getBoolean("isDefaultRecipe") ?: false
             val selectedRecipe by recipeViewModel.selectedRecipe.observeAsState()
 

@@ -68,7 +68,11 @@ fun RecipeDetailsScreen(
                         .size(32.dp)
                 ) {
                     Icon(
-                        if (isFavourite == true) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        if (isFavourite == true) {
+                            Icons.Filled.Favorite
+                        } else {
+                            Icons.Filled.FavoriteBorder
+                        },
                         contentDescription =
                         if (isFavourite == true) "Favourite Selected" else "Favourite Unselected"
                     )
@@ -125,8 +129,9 @@ fun RecipeDetailsScreen(
                 .padding(vertical = 10.dp)
                 .padding(start = 20.dp)
         )
+        val formattedInstructionsText = recipe.instructions.replace(Regex("\\\\n|\\\\r\\\\n"), "\n")
         Text(
-            text = recipe.instructions,
+            text = formattedInstructionsText,
             fontSize = 16.sp,
             modifier = Modifier
                 .padding(horizontal = 20.dp)

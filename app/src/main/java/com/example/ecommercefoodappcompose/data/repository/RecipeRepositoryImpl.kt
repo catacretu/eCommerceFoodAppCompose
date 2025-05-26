@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
 import com.example.ecommercefoodappcompose.data.local.dao.RecipeDAO
-import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import com.example.ecommercefoodappcompose.data.local.model.RecipeItem
 import com.example.ecommercefoodappcompose.data.remote.RecipeService
 import com.example.ecommercefoodappcompose.data.remote.entity.ChatRequest
@@ -20,8 +19,6 @@ class RecipeRepositoryImpl @Inject constructor(
     private val recipeDao: RecipeDAO,
     private val foodDAO: FoodDAO
 ) : RecipeRepository {
-
-    val allFoodItems: LiveData<List<FoodItem>> = foodDAO.getAllFoodItems()
 
     private val _recipes = MutableLiveData<List<RecipeItem>>()
     val recipes: LiveData<List<RecipeItem>> = _recipes
@@ -55,8 +52,14 @@ class RecipeRepositoryImpl @Inject constructor(
                 ),
                 Message(
                     "user",
-                    "$searchMsg Format response as a JSON array with objects " +
-                        "containing title, time, imageUrl, ingredients (list), and instructions."
+                    "$searchMsg Format the response as a JSON array. Each object should include: " +
+                        "`title` (string), `time` (string), `imageUrl` (string), `ingredients` " +
+                        "(list of strings), and `instructions` (string). " +
+                        "If `ingredients` are ordered (e.g. '1. 2 eggs, 2. 100g flour')" +
+                        ", each item in the list should end with a `\n`. " +
+                        "For `instructions`, use `\n` between ordered steps like '1. " +
+                        "Do this\n2. Do that'.Ensure that all strings are " +
+                        "properly escaped to be valid JSON."
                 )
             ),
             model = "gpt-3.5-turbo",
@@ -113,8 +116,8 @@ class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
-    fun getAllRecipes(): LiveData<List<RecipeItem>> {
-        return recipeDao.getAllRecipes()
+    fun getFavouriteRecipes(): LiveData<List<RecipeItem>> {
+        return recipeDao.getFavouriteRecipes()
     }
 
     fun getDefaultRecipes(): LiveData<List<RecipeItem>> {
