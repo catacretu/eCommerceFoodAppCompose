@@ -33,7 +33,8 @@ import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 fun RecipeCard(
     recipe: RecipeItem,
     onFavoriteClick: (RecipeItem) -> Unit,
-    onRecipeClick: (RecipeItem) -> Unit
+    onRecipeClick: (RecipeItem) -> Unit,
+    isDefaultRecipe: Boolean = false
 ) {
     Card(
         modifier = Modifier
@@ -70,16 +71,18 @@ fun RecipeCard(
                 )
                 Text(recipe.time, fontSize = 14.sp, modifier = Modifier.padding(top = 7.dp))
             }
-            IconButton(onClick = { onFavoriteClick(recipe) }) {
-                Icon(
-                    imageVector = if (recipe.isFavourite) {
-                        Icons.Filled.Favorite
-                    } else {
-                        Icons.Outlined.Favorite
-                    },
-                    contentDescription = "Favorite",
-                    tint = if (recipe.isFavourite) inversePrimaryDark else Color.LightGray
-                )
+            if (!isDefaultRecipe) {
+                IconButton(onClick = { onFavoriteClick(recipe) }) {
+                    Icon(
+                        imageVector = if (recipe.isFavourite) {
+                            Icons.Filled.Favorite
+                        } else {
+                            Icons.Outlined.Favorite
+                        },
+                        contentDescription = "Favorite",
+                        tint = if (recipe.isFavourite) inversePrimaryDark else Color.LightGray
+                    )
+                }
             }
         }
     }

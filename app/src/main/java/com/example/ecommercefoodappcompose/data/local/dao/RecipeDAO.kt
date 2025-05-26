@@ -15,6 +15,9 @@ interface RecipeDAO {
     @Query("SELECT * FROM recipes")
     fun getAllRecipes(): LiveData<List<RecipeItem>>
 
+    @Query("SELECT * FROM recipes WHERE isFavourite = 1")
+    fun getDefaultRecipes(): LiveData<List<RecipeItem>>
+
     @Query("DELETE FROM recipes WHERE id = :recipeId")
     suspend fun deleteRecipeById(recipeId: Int)
 

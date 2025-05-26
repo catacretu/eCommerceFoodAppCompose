@@ -117,6 +117,10 @@ class RecipeRepositoryImpl @Inject constructor(
         return recipeDao.getAllRecipes()
     }
 
+    fun getDefaultRecipes(): LiveData<List<RecipeItem>> {
+        return recipeDao.getDefaultRecipes()
+    }
+
     fun clearAllRecipes() {
         _recipes.postValue(emptyList())
     }

@@ -22,6 +22,7 @@ fun RecipeList(
     onFavoriteClick: (RecipeItem) -> Unit,
     onDislikeClicked: () -> Unit,
     isLoading: Boolean = false,
+    isDefaultValues: Boolean = false,
     searchQuery: String = "",
     modifier: Modifier
 ) {
@@ -40,10 +41,11 @@ fun RecipeList(
                 },
                 onRecipeClick = { selectedRecipe ->
                     onRecipeSelected(selectedRecipe)
-                }
+                },
+                isDefaultRecipe = isDefaultValues
             )
         }
-        if (!isLoading && searchQuery.isNotEmpty()) {
+        if (!isDefaultValues && !isLoading && searchQuery.isNotEmpty()) {
             item {
                 Button(
                     onClick = { onDislikeClicked() },

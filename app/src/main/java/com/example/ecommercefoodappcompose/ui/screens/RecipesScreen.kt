@@ -75,7 +75,7 @@ fun RecipesScreen(
             Crossfade(targetState = selectedTab, label = "TabCrossfade") { tab ->
                 when (tab) {
                     0 -> SearchRecipeScreen(navController, recipeViewModel)
-                    1 -> MoreScreen(navController)
+                    1 -> OurRecipesScreen(navController, recipeViewModel)
                 }
             }
         }

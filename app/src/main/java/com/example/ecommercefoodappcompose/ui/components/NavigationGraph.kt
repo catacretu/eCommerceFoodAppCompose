@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.ecommercefoodappcompose.ui.screens.CartScreen
 import com.example.ecommercefoodappcompose.ui.screens.CheckoutScreen
 import com.example.ecommercefoodappcompose.ui.screens.FavouritesScreen
@@ -92,11 +94,19 @@ fun NavigationGraph(
             )
         }
 
-        composable("recipe_item_details") {
+        composable(
+            route = "recipe_item_details?isDefaultRecipe={isDefaultRecipe}",
+            arguments = listOf(
+                navArgument("isDefaultRecipe") {
+                    type = NavType.BoolType
+                    defaultValue = false
+                }
+            )) {backStackEntry ->
+            val isDefaultRecipe = backStackEntry.arguments?.getBoolean("isDefaultRecipe") ?: false
             val selectedRecipe by recipeViewModel.selectedRecipe.observeAsState()
 
             if (selectedRecipe != null) {
-                RecipeDetailsScreen(selectedRecipe!!, recipeViewModel) {
+                RecipeDetailsScreen(selectedRecipe!!, recipeViewModel, isDefaultRecipe) {
                     navController.popBackStack()
                 }
             }

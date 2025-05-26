@@ -34,6 +34,7 @@ import com.example.ecommercefoodappcompose.ui.viewmodel.RecipeViewModel
 fun RecipeDetailsScreen(
     recipe: RecipeItem,
     recipeViewModel: RecipeViewModel,
+    isDefaultRecipe: Boolean,
     onBackClick: () -> Unit
 ) {
     val isFavourite = recipeViewModel.isFavourite.value
@@ -59,16 +60,19 @@ fun RecipeDetailsScreen(
             ) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
             }
-            IconButton(
-                onClick = { recipeViewModel.toggleFavorite(recipe) },
-                modifier = Modifier
-                    .size(32.dp)
-            ) {
-                Icon(
-                    if (isFavourite == true) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                    contentDescription =
-                    if (isFavourite == true) "Favourite Selected" else "Favourite Unselected"
-                )
+
+            if (!isDefaultRecipe) {
+                IconButton(
+                    onClick = { recipeViewModel.toggleFavorite(recipe) },
+                    modifier = Modifier
+                        .size(32.dp)
+                ) {
+                    Icon(
+                        if (isFavourite == true) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription =
+                        if (isFavourite == true) "Favourite Selected" else "Favourite Unselected"
+                    )
+                }
             }
         }
 
