@@ -37,7 +37,6 @@ fun OurRecipesScreen(navController: NavController, recipeViewModel: RecipeViewMo
         RecipeList(
             recipeList = defaultRecipes.value,
             onRecipeSelected = { selectedRecipe ->
-                recipeViewModel.findMatchingIngredients(selectedRecipe.ingredients, foodItems)
                 recipeViewModel.selectRecipe(selectedRecipe)
                 navController.navigate("recipe_item_details?isDefaultRecipe=true")
             },

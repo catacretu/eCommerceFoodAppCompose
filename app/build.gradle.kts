@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlinAndroidKsp)
+    alias(libs.plugins.google.services)
     id("org.jlleitschuh.gradle.ktlint") version "11.5.1"
 }
 
@@ -65,6 +66,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
     ksp(libs.hilt.compiler)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
