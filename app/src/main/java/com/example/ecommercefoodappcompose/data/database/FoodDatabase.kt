@@ -9,7 +9,7 @@ import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import com.example.ecommercefoodappcompose.data.local.model.RecipeItem
 import com.example.ecommercefoodappcompose.data.local.model.TypeConverter
 
-@Database(entities = [FoodItem::class, RecipeItem::class], version = 7, exportSchema = false)
+@Database(entities = [FoodItem::class, RecipeItem::class], version = 8, exportSchema = false)
 @TypeConverters(TypeConverter::class)
 abstract class FoodDatabase : RoomDatabase() {
     abstract fun foodDao(): FoodDAO

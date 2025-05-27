@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
 import com.example.ecommercefoodappcompose.data.local.dao.RecipeDAO
+import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import com.example.ecommercefoodappcompose.data.local.model.RecipeItem
 import com.example.ecommercefoodappcompose.data.remote.RecipeService
 import com.example.ecommercefoodappcompose.data.remote.entity.ChatRequest
@@ -35,6 +36,8 @@ class RecipeRepositoryImpl @Inject constructor(
             return
         }
         _isLoading.postValue(true)
+        val myIngredients = withContext(Dispatchers.IO) { foodDAO.getAllFoodItemNames() }
+        val ingredientsList = myIngredients.joinToString(", ") { "\"$it\"" }
 
         val searchMsg =
             if (additionalSearch) {
@@ -47,23 +50,25 @@ class RecipeRepositoryImpl @Inject constructor(
             messages = listOf(
                 Message(
                     "system",
-                    "You are a helpful assistant that returns recipes in JSON format and" +
-                        " each recipe must include a real image URL that exists on the internet.."
+                    "You are a culinary assistant specialized in generating " +
+                        "practical and well-known recipes. " +
+                        "Avoid unrealistic or nonsensical ingredient combinations. " +
+                        "Always return responses in valid JSON format, and make sure each " +
+                        "recipe includes a real image URL that exists online."
                 ),
                 Message(
                     "user",
-                    "$searchMsg Format the response as a JSON array. Each object should include: " +
-                        "`title` (string), `time` (string), `imageUrl` (string), `ingredients` " +
-                        "(list of strings), and `instructions` (string). " +
-                        "If `ingredients` are ordered (e.g. '1. 2 eggs, 2. 100g flour')" +
-                        ", each item in the list should end with a `\n`. " +
-                        "For `instructions`, use `\n` between ordered steps like '1. " +
-                        "Do this\n2. Do that'.Ensure that all strings are " +
-                        "properly escaped to be valid JSON."
+                    "$searchMsg Format the response as a JSON array. Each object" +
+                        " should include: `title` (string), `time` (string), `imageUrl`" +
+                        " (string), `ingredients` (list of strings),`instructions` (string)," +
+                        " and a `matchedIngredients` field (list of strings) that contains " +
+                        "items from the following pantry list " +
+                        "if they appear in the ingredients: [$ingredientsList]. " +
+                        "For ordered lists in `instructions`, separate steps using `\n`."
                 )
             ),
             model = "gpt-3.5-turbo",
-            temperature = 0.7
+            temperature = 0.5
         )
 
         try {
@@ -78,6 +83,9 @@ class RecipeRepositoryImpl @Inject constructor(
 
             val recipeList = (0 until recipesArray.length()).map {
                 val obj = recipesArray.getJSONObject(it)
+                val matchedIngredients = obj.getJSONArray("matchedIngredients").let { arr ->
+                    List(arr.length()) { index -> arr.getString(index) }
+                }
                 RecipeItem(
                     title = obj.getString("title"),
                     time = obj.getString("time"),
@@ -85,6 +93,7 @@ class RecipeRepositoryImpl @Inject constructor(
                     ingredients = obj.getJSONArray("ingredients").let { arr ->
                         List(arr.length()) { index -> arr.getString(index) }
                     },
+                    matchedIngredients = matchedIngredients,
                     instructions = obj.getString("instructions")
                 )
             }
@@ -113,6 +122,16 @@ class RecipeRepositoryImpl @Inject constructor(
     private suspend fun insertRecipe(recipe: RecipeItem) {
         withContext(Dispatchers.IO) {
             recipeDao.insertRecipe(recipe)
+        }
+    }
+
+    fun getAllFoodItems(): LiveData<List<FoodItem>> {
+        return foodDAO.getAllFoodItems()
+    }
+
+    suspend fun getFoodItemsByNames(names: List<String>): List<FoodItem> {
+        return withContext(Dispatchers.IO) {
+            foodDAO.getFoodItemsByNames(names)
         }
     }
 

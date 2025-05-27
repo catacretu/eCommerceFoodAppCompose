@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import com.example.ecommercefoodappcompose.data.local.model.RecipeItem
 import com.example.ecommercefoodappcompose.data.repository.RecipeRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +22,11 @@ class RecipeViewModel @Inject constructor(
     var searchQuery by mutableStateOf("")
     var shouldClearResults by mutableStateOf(false)
 
+    private val _ingredientsList = MutableLiveData<List<FoodItem>>()
+    val ingredientsList: LiveData<List<FoodItem>> = _ingredientsList
+
     val recipeItems: LiveData<List<RecipeItem>> = recipeRepository.recipes
+    val foodItems: LiveData<List<FoodItem>> = recipeRepository.getAllFoodItems()
     val favouriteRecipes: LiveData<List<RecipeItem>> = recipeRepository.getFavouriteRecipes()
     val defaultRecipes: LiveData<List<RecipeItem>> = recipeRepository.getDefaultRecipes()
     private val _selectedRecipe = MutableLiveData<RecipeItem>()
@@ -36,6 +41,7 @@ class RecipeViewModel @Inject constructor(
     }
 
     fun selectRecipe(recipe: RecipeItem) {
+        updateIngredientsList(recipe.matchedIngredients)
         _selectedRecipe.value = recipe
     }
 
@@ -55,4 +61,49 @@ class RecipeViewModel @Inject constructor(
         recipeRepository.clearAllRecipes()
         shouldClearResults = false
     }
+
+    private fun updateIngredientsList(recipeIngredients: List<String>) {
+        if (recipeIngredients.isNotEmpty()) {
+            viewModelScope.launch {
+                val ingredients = recipeRepository.getFoodItemsByNames(recipeIngredients)
+                val allAreOthers = ingredients.isNotEmpty() && ingredients.all {
+                    it.category.equals("Others", ignoreCase = true)
+                }
+                if (allAreOthers) {
+                    _ingredientsList.postValue(emptyList())
+                } else {
+                    _ingredientsList.postValue(ingredients)
+                }
+            }
+        } else {
+            _ingredientsList.postValue(emptyList())
+        }
+    }
+
+//    fun findMatchingIngredients(recipeIngredients: List<String>, foodItems: List<FoodItem>) {
+//        val matchedIngredients = mutableListOf<FoodItem>()
+// //        val allFoodItems = foodItems.value ?: emptyList()
+//
+//        val normalizedFoodItems = foodItems.map { foodItem ->
+//            normalize(foodItem.name) to foodItem
+//        }
+//
+//        for (ingredientLine in recipeIngredients) {
+//            val normalizedLine = normalize(ingredientLine)
+//
+//            for ((normalizedName, foodItem) in normalizedFoodItems) {
+//                if (normalizedLine.contains(normalizedName)) {
+//                    matchedIngredients.add(foodItem)
+//                }
+//            }
+//        }
+//        _recipeIngredients.postValue(matchedIngredients.distinctBy { it.id })
+//    }
+//
+//    private fun normalize(text: String): String {
+//        return text.lowercase()
+//            .replace("[^a-zăîâșț ]".toRegex(), "")
+//            .replace("\\s+".toRegex(), " ")
+//            .trim()
+//    }
 }

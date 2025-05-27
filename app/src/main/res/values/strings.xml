@@ -8,4 +8,5 @@
     <string name="recpie_search_bar_txt">Search a recipe</string>
     <string name="no_recipes_available_txt">There are no recipes available.</string>
     <string name="no_favorites_available_txt">There are no favorites available.</string>
+    <string name="start_this_recipe_with_these_txt">Start this recipe with these:</string>
 </resources>

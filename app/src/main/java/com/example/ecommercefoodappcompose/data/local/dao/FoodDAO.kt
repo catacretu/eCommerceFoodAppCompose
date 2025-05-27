@@ -16,6 +16,12 @@ interface FoodDAO {
     @Query("Select * FROM food_table")
     fun getAllFoodItems(): LiveData<List<FoodItem>>
 
+    @Query("SELECT name FROM food_table")
+    fun getAllFoodItemNames(): List<String>
+
+    @Query("SELECT * FROM food_table WHERE name IN (:names)")
+    suspend fun getFoodItemsByNames(names: List<String>): List<FoodItem>
+
     @Query("Select * FROM food_table WHERE id = :foodItemId")
     suspend fun getFoodItemById(foodItemId: Int): FoodItem
 

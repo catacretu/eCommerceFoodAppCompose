@@ -10,6 +10,7 @@ data class RecipeItem(
     val time: String,
     val imageUrl: String,
     val ingredients: List<String>,
+    val matchedIngredients: List<String>,
     val instructions: String,
     var isFavourite: Boolean = false
 )

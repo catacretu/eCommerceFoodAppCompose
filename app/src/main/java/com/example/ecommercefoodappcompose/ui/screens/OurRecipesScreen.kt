@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,6 +20,7 @@ import com.example.ecommercefoodappcompose.ui.viewmodel.RecipeViewModel
 @Composable
 fun OurRecipesScreen(navController: NavController, recipeViewModel: RecipeViewModel) {
     val defaultRecipes = recipeViewModel.defaultRecipes.observeAsState(initial = emptyList())
+    val foodItems by recipeViewModel.foodItems.observeAsState(initial = emptyList())
     Column(
         modifier = Modifier
             .wrapContentSize()
@@ -35,6 +37,7 @@ fun OurRecipesScreen(navController: NavController, recipeViewModel: RecipeViewMo
         RecipeList(
             recipeList = defaultRecipes.value,
             onRecipeSelected = { selectedRecipe ->
+                recipeViewModel.findMatchingIngredients(selectedRecipe.ingredients, foodItems)
                 recipeViewModel.selectRecipe(selectedRecipe)
                 navController.navigate("recipe_item_details?isDefaultRecipe=true")
             },

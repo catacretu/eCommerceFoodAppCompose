@@ -107,7 +107,13 @@ fun NavigationGraph(
             val selectedRecipe by recipeViewModel.selectedRecipe.observeAsState()
 
             if (selectedRecipe != null) {
-                RecipeDetailsScreen(selectedRecipe!!, recipeViewModel, isDefaultRecipe) {
+                RecipeDetailsScreen(
+                    navController,
+                    selectedRecipe!!,
+                    foodViewModel,
+                    recipeViewModel,
+                    isDefaultRecipe
+                ) {
                     navController.popBackStack()
                 }
             }
