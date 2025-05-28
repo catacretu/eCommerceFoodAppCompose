@@ -10,10 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -69,11 +66,11 @@ fun HomeScreen(
     val focusManager = LocalFocusManager.current
     var loadingStartTime = rememberSaveable { mutableLongStateOf(0L) }
     val filters = listOf(
-        "Vegetables" to Icons.Default.ShoppingCart,
-        "Fruits" to Icons.Default.AddCircle,
-        "Meat" to Icons.Default.Lock,
-        "Dairy" to Icons.Default.Lock,
-        "Others" to Icons.Default.Lock
+        "Vegetables" to R.drawable.ic_veg,
+        "Fruits" to R.drawable.ic_fruits_24,
+        "Meat" to R.drawable.ic_meat_24,
+        "Dairy" to R.drawable.ic_cheese_24,
+        "Others" to R.drawable.ic_others_24
     )
 
     HandleLoadingState(
@@ -160,6 +157,7 @@ fun HomeScreen(
                             IconButton(onClick = { isDropdownExpanded = true }) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_sort_24),
+                                    tint = colorResource(R.color.gray_icon),
                                     contentDescription = "Sort Button"
                                 )
                             }

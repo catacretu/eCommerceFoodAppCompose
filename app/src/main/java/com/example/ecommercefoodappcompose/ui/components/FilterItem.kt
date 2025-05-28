@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,7 +25,7 @@ import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDarkHighContra
 
 @Composable
 fun FilterItem(
-    icon: ImageVector,
+    icon: Int,
     label: String,
     isSelected: Boolean,
     onClick: () -> Unit
@@ -47,7 +47,7 @@ fun FilterItem(
                 .padding(horizontal = 10.dp, vertical = 10.dp)
         ) {
             Icon(
-                imageVector = icon,
+                painter = painterResource(icon),
                 contentDescription = label,
                 tint = iconTint,
                 modifier = Modifier

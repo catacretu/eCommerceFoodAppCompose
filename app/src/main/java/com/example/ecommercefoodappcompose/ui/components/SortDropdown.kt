@@ -23,8 +23,8 @@ fun SortDropdownMenu(
         "None" to SortOption.NONE,
         "Name A-Z" to SortOption.NAME_ASC,
         "Name Z-A" to SortOption.NAME_DESC,
-        "Price ↑" to SortOption.PRICE_ASC,
-        "Price ↓" to SortOption.PRICE_DESC
+        "Price (Low-High)" to SortOption.PRICE_ASC,
+        "Price (High-Low)" to SortOption.PRICE_DESC
     )
 
     DropdownMenu(
