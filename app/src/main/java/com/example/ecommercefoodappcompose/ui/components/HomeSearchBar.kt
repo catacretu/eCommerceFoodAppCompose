@@ -1,8 +1,8 @@
 package com.example.ecommercefoodappcompose.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -41,7 +41,7 @@ fun HomeSearchBar(
             viewModel.updateSearchQuery(newText)
         },
         modifier = modifier
-            .fillMaxWidth()
+            .wrapContentWidth()
             .background(Color.White),
         shape = RoundedCornerShape(24.dp),
         trailingIcon = {

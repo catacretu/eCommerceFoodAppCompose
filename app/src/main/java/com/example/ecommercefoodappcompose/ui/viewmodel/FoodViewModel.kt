@@ -6,11 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import com.example.ecommercefoodappcompose.data.local.model.ShippingDetailsItem
+import com.example.ecommercefoodappcompose.data.local.model.SortOption
 import com.example.ecommercefoodappcompose.data.repository.FoodRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -36,10 +38,12 @@ class FoodViewModel @Inject constructor(
         private set
     var searchQuery by mutableStateOf("")
         private set
+    var sortOption by mutableStateOf(SortOption.NONE)
+        private set
     private var searchJob: Job? = null
 
     val foodItems: LiveData<List<FoodItem>> = foodRepository.getAllFoodItems()
-    private val _filteredFoodItems = MutableLiveData<List<FoodItem>>()
+    private val _filteredFoodItems = MediatorLiveData<List<FoodItem>>()
     val filteredFoodItems: LiveData<List<FoodItem>> = _filteredFoodItems
     private val _cartItems = MutableLiveData<List<FoodItem>>()
     val cartItems: LiveData<List<FoodItem>> = _cartItems
@@ -48,6 +52,9 @@ class FoodViewModel @Inject constructor(
 
     init {
         // The data is already being emitted via LiveData, no explicit action is required here.
+        _filteredFoodItems.addSource(foodItems) {
+            applyFilters()
+        }
     }
     fun selectFoodItem(foodItem: FoodItem) {
         _selectedFoodItem.value = foodItem
@@ -101,15 +108,30 @@ class FoodViewModel @Inject constructor(
         val allItems = foodItems.value ?: emptyList()
         viewModelScope.launch {
             delay(if (searchQuery.isEmpty()) 0 else 500)
-            val filtered = allItems.filter { item ->
+            var filtered = allItems.filter { item ->
                 val matchesCategory = activeFilters.isEmpty() || item.category in activeFilters
                 val matchesSearch =
                     searchQuery.isBlank() || item.name.contains(searchQuery, ignoreCase = true)
                 matchesCategory && matchesSearch
             }
+
+            filtered = when (sortOption) {
+                SortOption.NAME_ASC -> filtered.sortedBy { it.name }
+                SortOption.NAME_DESC -> filtered.sortedByDescending { it.name }
+                SortOption.PRICE_ASC -> filtered.sortedBy { extractPrice(it.price) }
+                SortOption.PRICE_DESC -> filtered.sortedByDescending { extractPrice(it.price) }
+                SortOption.NONE -> filtered
+            }
+
             _filteredFoodItems.value = filtered
             _isSearching.value = false
         }
+    }
+
+    private fun extractPrice(priceString: String): Int {
+        return Regex("lei|leu")
+            .split(priceString)[0]
+            .trim().trim().toInt()
     }
 
     fun addCartItem(foodItem: FoodItem) {
@@ -153,5 +175,10 @@ class FoodViewModel @Inject constructor(
 
     fun clearShippingDetails() {
         shippingDetailsState = ShippingDetailsItem()
+    }
+
+    fun updateSortOption(newSortOption: SortOption) {
+        sortOption = newSortOption
+        applyFilters()
     }
 }
