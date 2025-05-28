@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -69,7 +70,9 @@ fun CartScreen(
                 activity,
                 foodViewModel,
                 navController,
-                modifier = Modifier.wrapContentHeight(),
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .heightIn(max = 600.dp),
                 totalAmount = totalAmount
             )
             Row(
@@ -80,12 +83,12 @@ fun CartScreen(
             ) {
                 Text(
                     text = "Total: ${totalAmount.value} lei",
-                    modifier = Modifier.padding(start = 30.dp, top = 28.dp, bottom = 85.dp),
+                    modifier = Modifier.padding(start = 30.dp, top = 28.dp, bottom = 25.dp),
                     fontWeight = FontWeight.W500
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 GradientButton(
-                    modifier = Modifier.padding(top = 15.dp, bottom = 85.dp),
+                    modifier = Modifier.padding(top = 15.dp, bottom = 25.dp),
                     textButton = "Checkout",
                     onClick = {
                         navController.navigate("shipping_screen")

@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -38,7 +36,6 @@ fun CheckoutScreen(
 ) {
     val shippingDetails = foodViewModel.shippingDetailsState
     val totalAmount: MutableState<Int> = remember { mutableIntStateOf(0) }
-    val verticalScrollState = rememberScrollState()
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -105,9 +102,7 @@ fun CheckoutScreen(
             activity,
             foodViewModel,
             navController,
-            modifier = Modifier
-                .height(370.dp)
-                .verticalScroll(verticalScrollState),
+            modifier = Modifier.height(370.dp),
             totalAmount = totalAmount,
             isCheckoutScreen = true
         )

@@ -86,6 +86,8 @@ fun FoodRowItem(
                 Text(
                     text = if (isFavourite) {
                         foodItem.price
+                    } else if (isCheckoutScreen) {
+                        "Subtotal: ${itemQuantity.value * extractPrice(foodItem.price)} lei"
                     } else {
                         "${itemQuantity.value * extractPrice(foodItem.price)} lei"
                     },
