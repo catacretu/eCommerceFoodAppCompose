@@ -1,6 +1,7 @@
 package com.example.ecommercefoodappcompose.ui.screens
 
 import android.app.Activity
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -63,6 +66,7 @@ fun HomeScreen(
     val showLoading = rememberSaveable { mutableStateOf(false) }
     val searchQuery = foodViewModel.searchQuery
     val minLoadingTime = 1000L
+    val focusManager = LocalFocusManager.current
     var loadingStartTime = rememberSaveable { mutableLongStateOf(0L) }
     val filters = listOf(
         "Vegetables" to Icons.Default.ShoppingCart,
@@ -130,6 +134,11 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
+                        .pointerInput(Unit) {
+                            detectTapGestures(onTap = {
+                                focusManager.clearFocus()
+                            })
+                        }
                 ) {
                     Row(
                         modifier = Modifier

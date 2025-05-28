@@ -1,5 +1,6 @@
 package com.example.ecommercefoodappcompose.ui.screens
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,11 +35,17 @@ fun SearchRecipeScreen(
     val recipesItems = recipeViewModel.recipeItems.observeAsState(initial = emptyList())
     val favouriteRecipes = recipeViewModel.favouriteRecipes.observeAsState(initial = emptyList())
     val isLoading by recipeViewModel.isLoading.observeAsState(false)
+    val focusManager = LocalFocusManager.current
     val searchQuery = recipeViewModel.searchQuery
 
     Column(
         modifier = Modifier
             .wrapContentSize()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    focusManager.clearFocus()
+                })
+            }
     ) {
         RecipeSearchBar(
             searchQuery = recipeViewModel.searchQuery,
