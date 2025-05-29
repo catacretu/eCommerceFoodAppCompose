@@ -31,34 +31,60 @@ class AuthViewModel @Inject constructor(
         private set
     var authUiState by mutableStateOf<AuthUiState>(AuthUiState.Idle)
         private set
+    var emailError by mutableStateOf<String?>(null)
+        private set
+    var passwordError by mutableStateOf<String?>(null)
+        private set
+    var confirmPasswordError by mutableStateOf<String?>(null)
 
     fun onEmailChange(newEmail: String) {
         email = newEmail
+        emailError = null
+        authUiState = AuthUiState.Idle
     }
 
     fun onPasswordChange(newPassword: String) {
         password = newPassword
+        passwordError = null
+        authUiState = AuthUiState.Idle
     }
 
     fun onConfirmPasswordChange(newPassword: String) {
         confirmPassword = newPassword
+        confirmPasswordError = null
+        authUiState = AuthUiState.Idle
     }
 
     fun register() {
+        resetFieldErrors()
         authUiState = AuthUiState.Idle
-        if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
-            authUiState = AuthUiState.Error("All fields must be filled.")
-            return
+
+        var hasError = false
+        if (email.isBlank()) {
+            emailError = "Email cannot be empty."
+            hasError = true
         }
-        if (password.length < 6) {
-            authUiState = AuthUiState.Error("Password must be at least 6 characters long.")
-            return
+        if (password.isBlank()) {
+            passwordError = "Password cannot be empty."
+            hasError = true
+        }
+        if (confirmPassword.isBlank()) {
+            confirmPasswordError = "Confirm password cannot be empty."
+            hasError = true
         }
 
-        if (password != confirmPassword) {
-            authUiState = AuthUiState.Error("Passwords do not match.")
-            return
+        if (password.length < 6) {
+            passwordError = "Password must be at least 6 characters long."
+            hasError = true
         }
+        if (password != confirmPassword) {
+            confirmPasswordError = "Passwords do not match."
+            if (password.length >= 6)
+                passwordError = "Passwords do not match."
+            hasError = true
+        }
+
+        if (hasError) return
 
         authUiState = AuthUiState.Loading
 
@@ -66,10 +92,21 @@ class AuthViewModel @Inject constructor(
             try {
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
-                        authUiState = if (task.isSuccessful) {
-                            AuthUiState.RegisterSuccess
+                        if (task.isSuccessful) {
+                            authUiState = AuthUiState.RegisterSuccess
                         } else {
-                            AuthUiState.Error(task.exception?.message ?: "Registration failed.")
+                            // Firebase specific error handling
+                            val errorMessage = task.exception?.message
+                            if (errorMessage != null) {
+                                when {
+                                    errorMessage.contains("email address is already in use") -> emailError = "Email already in use."
+                                    errorMessage.contains("The email address is badly formatted") -> emailError = "Email is badly formatted."
+                                    // Add other specific Firebase Auth errors if needed
+                                    else -> authUiState = AuthUiState.Error(errorMessage) // General error
+                                }
+                            } else {
+                                authUiState = AuthUiState.Error("Registration failed.")
+                            }
                         }
                     }
             } catch (e: Exception) {
@@ -79,12 +116,20 @@ class AuthViewModel @Inject constructor(
     }
 
     fun login() {
+        resetFieldErrors()
         authUiState = AuthUiState.Idle
 
-        if (email.isBlank() || password.isBlank()) {
-            authUiState = AuthUiState.Error("Email and password cannot be empty")
-            return
+        var hasError = false
+        if (email.isBlank()) {
+            emailError = "Email cannot be empty."
+            hasError = true
         }
+        if (password.isBlank()) {
+            passwordError = "Password cannot be empty."
+            hasError = true
+        }
+
+        if (hasError) return
 
         authUiState = AuthUiState.Loading
 
@@ -95,11 +140,11 @@ class AuthViewModel @Inject constructor(
                         authUiState = if (task.isSuccessful) {
                             AuthUiState.Success
                         } else {
-                            AuthUiState.Error(task.exception?.message ?: "Unknown login error")
+                            AuthUiState.Error(task.exception?.message ?: "Login failed.")
                         }
                     }
             } catch (e: Exception) {
-                authUiState = AuthUiState.Error(e.message ?: "Unknown login error")
+                authUiState = AuthUiState.Error(e.message ?: "An unknown error occurred.")
             }
         }
     }
@@ -116,5 +161,11 @@ class AuthViewModel @Inject constructor(
 
     fun resetAuthUiState() {
         authUiState = AuthUiState.Idle
+    }
+
+    private fun resetFieldErrors() {
+        emailError = null
+        passwordError = null
+        confirmPasswordError = null
     }
 }

@@ -6,11 +6,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
@@ -22,16 +17,14 @@ fun TextFieldWithValidation(
     icon: ImageVector,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    isError: Boolean = false,
+    errorMessage: String? = null
 ) {
-    var isError by remember { mutableStateOf(false) }
 
     OutlinedTextField(
         value = value,
-        onValueChange = {
-            onValueChange(it)
-            isError = it.isEmpty()
-        },
+        onValueChange = onValueChange,
         label = { Text(label) },
         leadingIcon = {
             Icon(
@@ -42,7 +35,13 @@ fun TextFieldWithValidation(
         },
         isError = isError,
         supportingText = {
-            if (isError) Text("Field cannot be empty", color = Color.Red)
+            if (isError && errorMessage != null) {
+                Text(
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         },
         keyboardOptions = KeyboardOptions(keyboardType = inputType),
         visualTransformation = visualTransformation

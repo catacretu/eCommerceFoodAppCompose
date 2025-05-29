@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -75,7 +76,9 @@ fun LoginScreen(
             value = authViewModel.email,
             onValueChange = {
                 authViewModel.onEmailChange(it)
-            }
+            },
+            isError = authViewModel.emailError != null,
+            errorMessage = authViewModel.emailError
         )
         TextFieldWithValidation(
             "Password",
@@ -85,7 +88,9 @@ fun LoginScreen(
             value = authViewModel.password,
             onValueChange = {
                 authViewModel.onPasswordChange(it)
-            }
+            },
+            isError = authViewModel.passwordError != null,
+            errorMessage = authViewModel.passwordError
         )
         Spacer(modifier = Modifier.weight(0.05f))
         Button(
@@ -96,7 +101,11 @@ fun LoginScreen(
             enabled = authUiState !is AuthUiState.Loading
 
         ) {
-            Text(text = "Login")
+            if (authUiState == AuthUiState.Loading) {
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+            } else {
+                Text(text = "Login")
+            }
         }
         TextButton(onClick = { navController.navigate("register_screen") }) {
             Text(
