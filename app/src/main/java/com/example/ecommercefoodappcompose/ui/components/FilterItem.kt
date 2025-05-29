@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,11 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
-import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDarkHighContrast
 
 @Composable
 fun FilterItem(
@@ -30,10 +30,13 @@ fun FilterItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor = if (isSelected) inversePrimaryDark else Color(0xFFF5F5F5)
+    val backgroundColor = if (isSelected) {
+        MaterialTheme.colorScheme.inversePrimary
+    } else {
+        MaterialTheme.colorScheme.surfaceVariant
+    }
     val iconTint = if (isSelected) Color.White else Color.DarkGray
-    val textColor = if (isSelected) inversePrimaryDarkHighContrast else Color.DarkGray
-
+    val textColor = if (isSelected) MaterialTheme.colorScheme.scrim else Color.DarkGray
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -62,6 +65,7 @@ fun FilterItem(
             text = label,
             color = textColor,
             fontSize = 12.sp,
+            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
             textAlign = TextAlign.Center
         )
     }

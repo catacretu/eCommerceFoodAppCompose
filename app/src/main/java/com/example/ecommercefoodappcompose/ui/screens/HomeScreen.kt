@@ -14,6 +14,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -46,7 +47,6 @@ import com.example.ecommercefoodappcompose.ui.components.HomeSearchBar
 import com.example.ecommercefoodappcompose.ui.components.SortDropdownMenu
 import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigationBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
-import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -104,7 +104,7 @@ fun HomeScreen(
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     style = AppTypography.headlineMedium,
-                    color = inversePrimaryDark
+                    color = MaterialTheme.colorScheme.inversePrimary
                 )
             }
         } else {
@@ -118,7 +118,7 @@ fun HomeScreen(
                             )
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = inversePrimaryDark,
+                            containerColor = MaterialTheme.colorScheme.inversePrimary,
                             titleContentColor = Color.White
                         )
                     )
@@ -204,7 +204,7 @@ fun HomeScreen(
                                 fontSize = 30.sp,
                                 textAlign = TextAlign.Center,
                                 style = AppTypography.headlineMedium,
-                                color = inversePrimaryDark
+                                color = MaterialTheme.colorScheme.inversePrimary
                             )
                         }
                     } else {

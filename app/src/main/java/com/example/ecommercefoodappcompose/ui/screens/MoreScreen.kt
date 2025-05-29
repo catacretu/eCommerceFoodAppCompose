@@ -8,24 +8,31 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.ecommercefoodappcompose.ui.components.ThemeSelectorWithGradientBorder
 import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigationBar
+import com.example.ecommercefoodappcompose.ui.theme.AppTheme
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
-import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MoreScreen(navController: NavController) {
+fun MoreScreen(
+    navController: NavController,
+    currentTheme: AppTheme,
+    onThemeSelected: (AppTheme) -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -36,7 +43,7 @@ fun MoreScreen(navController: NavController) {
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = inversePrimaryDark,
+                    containerColor = MaterialTheme.colorScheme.inversePrimary,
                     titleContentColor = Color.White,
                     navigationIconContentColor = Color.White
                 )
@@ -58,7 +65,7 @@ fun MoreScreen(navController: NavController) {
                 style = AppTypography.titleLarge,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = inversePrimaryDark,
+                color = MaterialTheme.colorScheme.inversePrimary,
                 modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 10.dp)
             )
             Spacer(
@@ -73,7 +80,7 @@ fun MoreScreen(navController: NavController) {
                 style = AppTypography.titleLarge,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = inversePrimaryDark,
+                color = MaterialTheme.colorScheme.inversePrimary,
                 modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 10.dp)
             )
             Spacer(
@@ -84,16 +91,25 @@ fun MoreScreen(navController: NavController) {
                     .background(color = Color.LightGray)
             )
             Text(
-                text = "Change Theme",
+                text = "Themes",
                 style = AppTypography.titleLarge,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = inversePrimaryDark,
+                color = MaterialTheme.colorScheme.inversePrimary,
                 modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 10.dp)
             )
+
+            ThemeSelectorWithGradientBorder(
+                currentAppTheme = currentTheme,
+                onThemeSelected = onThemeSelected,
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterHorizontally)
+                    .fillMaxWidth(0.8f)
+            )
+
             Spacer(
                 modifier = Modifier
-                    .padding(top = 5.dp)
+                    .padding(top = 20.dp)
                     .height(2.dp)
                     .fillMaxWidth()
                     .background(color = Color.LightGray)
@@ -103,7 +119,7 @@ fun MoreScreen(navController: NavController) {
                 style = AppTypography.titleLarge,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = inversePrimaryDark,
+                color = MaterialTheme.colorScheme.inversePrimary,
                 modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 10.dp)
             )
         }

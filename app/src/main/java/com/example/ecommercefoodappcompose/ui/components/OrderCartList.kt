@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.R
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
-import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 
 @Composable
@@ -64,7 +64,7 @@ fun OrderCartList(
                 fontSize = 30.sp,
                 textAlign = TextAlign.Center,
                 style = AppTypography.headlineMedium,
-                color = inversePrimaryDark
+                color = MaterialTheme.colorScheme.inversePrimary
             )
         }
     } else {

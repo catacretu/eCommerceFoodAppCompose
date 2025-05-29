@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,7 +22,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.ui.components.TextFieldWithValidation
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
-import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -36,7 +36,7 @@ fun LoginScreen(navController: NavController) {
             text = "Food Store",
             fontSize = 50.sp,
             style = AppTypography.titleLarge,
-            color = inversePrimaryDark
+            color = MaterialTheme.colorScheme.inversePrimary
         )
         Spacer(modifier = Modifier.weight(0.15f))
         TextFieldWithValidation("Username", KeyboardType.Email, Icons.Filled.Person)

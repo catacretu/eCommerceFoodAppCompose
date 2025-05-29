@@ -25,6 +25,7 @@ import com.example.ecommercefoodappcompose.ui.screens.RecipeDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.RecipesScreen
 import com.example.ecommercefoodappcompose.ui.screens.ShippingScreen
 import com.example.ecommercefoodappcompose.ui.screens.SplashScreen
+import com.example.ecommercefoodappcompose.ui.theme.AppTheme
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 import com.example.ecommercefoodappcompose.ui.viewmodel.RecipeViewModel
 
@@ -34,7 +35,9 @@ fun NavigationGraph(
     activity: Activity,
     context: Context,
     foodViewModel: FoodViewModel,
-    recipeViewModel: RecipeViewModel
+    recipeViewModel: RecipeViewModel,
+    currentAppTheme: AppTheme,
+    onThemeChange: (AppTheme) -> Unit
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -128,7 +131,11 @@ fun NavigationGraph(
         }
 
         composable("more_screen") {
-            MoreScreen(navController)
+            MoreScreen(
+                navController,
+                currentTheme = currentAppTheme,
+                onThemeSelected = onThemeChange
+            )
         }
 
         composable("shipping_screen") {

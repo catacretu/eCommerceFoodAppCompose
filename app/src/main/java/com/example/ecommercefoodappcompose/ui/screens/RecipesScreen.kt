@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -22,7 +23,6 @@ import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.ui.components.SegmentedControl
 import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigationBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
-import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 import com.example.ecommercefoodappcompose.ui.viewmodel.RecipeViewModel
 
@@ -45,7 +45,7 @@ fun RecipesScreen(
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = inversePrimaryDark,
+                    containerColor = MaterialTheme.colorScheme.inversePrimary,
                     titleContentColor = Color.White,
                     navigationIconContentColor = Color.White
                 )

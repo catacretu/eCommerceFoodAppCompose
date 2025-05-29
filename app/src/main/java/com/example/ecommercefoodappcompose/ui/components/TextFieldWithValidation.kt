@@ -2,6 +2,7 @@ package com.example.ecommercefoodappcompose.ui.components
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
-import com.example.ecommercefoodappcompose.ui.theme.inversePrimaryDark
 
 @Composable
 fun TextFieldWithValidation(
@@ -33,7 +33,11 @@ fun TextFieldWithValidation(
         },
         label = { Text(label) },
         leadingIcon = {
-            Icon(imageVector = icon, contentDescription = "User Icon", tint = inversePrimaryDark)
+            Icon(
+                imageVector = icon,
+                contentDescription = "User Icon",
+                tint = MaterialTheme.colorScheme.inversePrimary
+            )
         },
         isError = isError,
         supportingText = {
