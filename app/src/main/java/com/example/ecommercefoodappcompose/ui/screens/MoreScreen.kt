@@ -152,6 +152,7 @@ fun MoreScreen(
                 color = MaterialTheme.colorScheme.inversePrimary,
                 modifier = Modifier
                     .clickable { authViewModel.logout() }
+                    .fillMaxWidth()
                     .padding(top = 15.dp, start = 20.dp, bottom = 10.dp)
             )
         }

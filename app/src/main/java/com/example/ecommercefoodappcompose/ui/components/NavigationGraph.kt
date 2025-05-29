@@ -23,6 +23,7 @@ import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
 import com.example.ecommercefoodappcompose.ui.screens.MoreScreen
 import com.example.ecommercefoodappcompose.ui.screens.RecipeDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.RecipesScreen
+import com.example.ecommercefoodappcompose.ui.screens.RegisterScreen
 import com.example.ecommercefoodappcompose.ui.screens.ShippingScreen
 import com.example.ecommercefoodappcompose.ui.screens.SplashScreen
 import com.example.ecommercefoodappcompose.ui.theme.AppTheme
@@ -57,6 +58,10 @@ fun NavigationGraph(
 
         composable("login_screen") {
             LoginScreen(navController)
+        }
+
+        composable("register_screen") {
+            RegisterScreen(navController)
         }
 
         composable("home_screen") {

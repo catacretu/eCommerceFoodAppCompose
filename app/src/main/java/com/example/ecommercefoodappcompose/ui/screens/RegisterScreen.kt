@@ -31,7 +31,7 @@ import com.example.ecommercefoodappcompose.ui.viewmodel.AuthUiState
 import com.example.ecommercefoodappcompose.ui.viewmodel.AuthViewModel
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     navController: NavController,
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
@@ -40,16 +40,23 @@ fun LoginScreen(
 
     LaunchedEffect(key1 = authUiState) {
         when (authUiState) {
-            is AuthUiState.Success -> {
-                navController.navigate("home_screen") {
-                    popUpTo("login_screen") { inclusive = true }
+            is AuthUiState.RegisterSuccess -> {
+                Toast.makeText(
+                    context,
+                    "Registration successful! You can now log in.",
+                    Toast.LENGTH_LONG
+                ).show()
+                navController.navigate("login_screen") {
+                    popUpTo("register_screen") { inclusive = true }
                 }
                 authViewModel.resetAuthUiState()
             }
+
             is AuthUiState.Error -> {
                 Toast.makeText(context, "Error: ${authUiState.message}", Toast.LENGTH_LONG).show()
                 authViewModel.resetAuthUiState()
             }
+
             else -> Unit
         }
     }
@@ -62,14 +69,14 @@ fun LoginScreen(
     ) {
         Spacer(modifier = Modifier.weight(0.25f))
         Text(
-            text = "Food Store",
+            text = "Register",
             fontSize = 50.sp,
             style = AppTypography.titleLarge,
             color = MaterialTheme.colorScheme.inversePrimary
         )
         Spacer(modifier = Modifier.weight(0.15f))
         TextFieldWithValidation(
-            "Username",
+            "Username or email",
             KeyboardType.Email,
             Icons.Filled.Person,
             value = authViewModel.email,
@@ -87,20 +94,32 @@ fun LoginScreen(
                 authViewModel.onPasswordChange(it)
             }
         )
+
+        TextFieldWithValidation(
+            "Confirm Password",
+            KeyboardType.Password,
+            Icons.Filled.Lock,
+            PasswordVisualTransformation(),
+            value = authViewModel.confirmPassword,
+            onValueChange = {
+                authViewModel.onConfirmPasswordChange(it)
+            }
+        )
+
         Spacer(modifier = Modifier.weight(0.05f))
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 62.dp),
-            onClick = { authViewModel.login() },
+            onClick = { authViewModel.register() },
             enabled = authUiState !is AuthUiState.Loading
 
         ) {
-            Text(text = "Login")
+            Text(text = "Register")
         }
-        TextButton(onClick = { navController.navigate("register_screen") }) {
+        TextButton(onClick = { navController.navigate("login_screen") }) {
             Text(
-                text = "Don't have an account? Register!",
+                text = "Already have an account? Log in!",
                 color = MaterialTheme.colorScheme.primary
             )
         }
