@@ -21,7 +21,6 @@ fun TextFieldWithValidation(
     isError: Boolean = false,
     errorMessage: String? = null
 ) {
-
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,

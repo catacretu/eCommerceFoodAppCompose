@@ -79,8 +79,9 @@ class AuthViewModel @Inject constructor(
         }
         if (password != confirmPassword) {
             confirmPasswordError = "Passwords do not match."
-            if (password.length >= 6)
+            if (password.length >= 6) {
                 passwordError = "Passwords do not match."
+            }
             hasError = true
         }
 
@@ -99,10 +100,12 @@ class AuthViewModel @Inject constructor(
                             val errorMessage = task.exception?.message
                             if (errorMessage != null) {
                                 when {
-                                    errorMessage.contains("email address is already in use") -> emailError = "Email already in use."
-                                    errorMessage.contains("The email address is badly formatted") -> emailError = "Email is badly formatted."
+                                    errorMessage.contains("email address is already in use")
+                                    -> emailError = "Email already in use."
+                                    errorMessage.contains("The email address is badly formatted")
+                                    -> emailError = "Email is badly formatted."
                                     // Add other specific Firebase Auth errors if needed
-                                    else -> authUiState = AuthUiState.Error(errorMessage) // General error
+                                    else -> authUiState = AuthUiState.Error(errorMessage)
                                 }
                             } else {
                                 authUiState = AuthUiState.Error("Registration failed.")
