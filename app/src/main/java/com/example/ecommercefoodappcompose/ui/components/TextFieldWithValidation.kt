@@ -20,15 +20,16 @@ fun TextFieldWithValidation(
     label: String,
     inputType: KeyboardType,
     icon: ImageVector,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    value: String,
+    onValueChange: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
     var isError by remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = text,
+        value = value,
         onValueChange = {
-            text = it
+            onValueChange(it)
             isError = it.isEmpty()
         },
         label = { Text(label) },

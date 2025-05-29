@@ -14,6 +14,7 @@ import com.example.ecommercefoodappcompose.data.repository.FoodRepository
 import com.example.ecommercefoodappcompose.data.repository.FoodRepositoryImpl
 import com.example.ecommercefoodappcompose.data.repository.RecipeRepository
 import com.example.ecommercefoodappcompose.data.repository.RecipeRepositoryImpl
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,6 +29,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
 
     @Provides
     @Singleton

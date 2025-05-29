@@ -1,6 +1,8 @@
 package com.example.ecommercefoodappcompose.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,25 +16,53 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.ui.components.ThemeSelectorWithGradientBorder
 import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigationBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTheme
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
+import com.example.ecommercefoodappcompose.ui.viewmodel.AuthUiState
+import com.example.ecommercefoodappcompose.ui.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoreScreen(
     navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel(),
     currentTheme: AppTheme,
     onThemeSelected: (AppTheme) -> Unit
 ) {
+    val context = LocalContext.current
+    val authUiState = authViewModel.authUiState
+
+    LaunchedEffect(key1 = authUiState) {
+        when (authUiState) {
+            is AuthUiState.LogoutSuccess -> {
+                Toast.makeText(context, "Logged out successfully!", Toast.LENGTH_SHORT).show()
+                navController.navigate("login_screen") {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
+                authViewModel.resetAuthUiState()
+            }
+            is AuthUiState.Error -> {
+                Toast.makeText(context, "Error: ${authUiState.message}", Toast.LENGTH_LONG).show()
+                authViewModel.resetAuthUiState()
+            }
+            else -> Unit
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -120,7 +150,9 @@ fun MoreScreen(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.inversePrimary,
-                modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 10.dp)
+                modifier = Modifier
+                    .clickable { authViewModel.logout() }
+                    .padding(top = 15.dp, start = 20.dp, bottom = 10.dp)
             )
         }
     }
