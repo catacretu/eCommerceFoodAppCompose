@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         PaymentConfiguration.init(
             applicationContext,
-            "pk_live_51MS0ndJj2PSkO5fyabieXVA4qRqptjkiImc8qqyCNf3jZOhE7ptxzwQ3vg5WXebwjo3uVgGF5CBEImRq4DHBYF0d003lOkl5AK"
+            PB_KEY
         )
         enableEdgeToEdge()
         setContent {

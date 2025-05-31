@@ -89,7 +89,6 @@ object AppModule {
             .build()
     }
 
-
     @Provides
     @Singleton
     fun provideFoodService(@FoodApi retrofit: Retrofit): FoodService {

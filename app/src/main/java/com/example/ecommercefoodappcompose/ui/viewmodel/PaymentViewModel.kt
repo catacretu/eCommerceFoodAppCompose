@@ -27,11 +27,16 @@ class PaymentViewModel @Inject constructor(
             _uiState.value = PaymentUiState(isLoading = true)
             val response = paymentRepository.createPaymentIntent(amount, currency)
             if (response.clientSecret != null) {
-                _uiState.value = PaymentUiState(clientSecret = response.clientSecret, isLoading = false)
-                // Aici ai clientSecret-ul. Poți continua cu integrarea Stripe SDK pe client.
+                _uiState.value = PaymentUiState(
+                    clientSecret = response.clientSecret,
+                    isLoading = false
+                )
                 println("Received clientSecret: ${response.clientSecret}")
             } else {
-                _uiState.value = PaymentUiState(errorMessage = response.error, isLoading = false)
+                _uiState.value = PaymentUiState(
+                    errorMessage = response.error,
+                    isLoading = false
+                )
                 println("Error: ${response.error}")
             }
         }
