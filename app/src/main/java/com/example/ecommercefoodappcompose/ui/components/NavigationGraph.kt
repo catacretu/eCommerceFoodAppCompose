@@ -21,6 +21,7 @@ import com.example.ecommercefoodappcompose.ui.screens.FoodItemDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.HomeScreen
 import com.example.ecommercefoodappcompose.ui.screens.LoginScreen
 import com.example.ecommercefoodappcompose.ui.screens.MoreScreen
+import com.example.ecommercefoodappcompose.ui.screens.PaymentScreen
 import com.example.ecommercefoodappcompose.ui.screens.RecipeDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.RecipesScreen
 import com.example.ecommercefoodappcompose.ui.screens.RegisterScreen
@@ -156,6 +157,10 @@ fun NavigationGraph(
                 navController,
                 foodViewModel
             )
+        }
+
+        composable("payment_screen") {
+            PaymentScreen()
         }
     }
 }

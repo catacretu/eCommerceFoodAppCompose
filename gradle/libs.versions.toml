@@ -3,6 +3,7 @@ agp = "8.8.0"
 coilCompose = "2.2.2"
 constraintlayoutCompose = "1.1.1"
 converterGson = "2.9.0"
+financialConnections = "21.15.1"
 firebaseBom = "33.14.0"
 kotlin = "2.0.0"
 coreKtx = "1.10.1"
@@ -21,6 +22,7 @@ retrofit = "2.9.0"
 roomRuntime = "2.5.2"
 roomKtx = "2.5.2"
 runtimeLivedata = "1.7.8"
+stripeAndroid = "21.15.1"
 uiTextGoogleFonts = "1.7.6"
 googleServices = "4.4.2"
 
@@ -34,6 +36,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedata" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+financial-connections = { module = "com.stripe:financial-connections", version.ref = "financialConnections" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -57,6 +60,7 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+stripe-android = { module = "com.stripe:stripe-android", version.ref = "stripeAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

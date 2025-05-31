@@ -142,7 +142,8 @@ fun CheckoutScreen(
                 .align(Alignment.CenterHorizontally),
             textButton = "Place Order",
             onClick = {
-                foodViewModel.clearShippingDetails()
+//                foodViewModel.clearShippingDetails()
+                navController.navigate("payment_screen")
             }
         )
     }

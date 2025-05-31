@@ -9,3 +9,7 @@ annotation class FoodApi
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class RecipeApi
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class StripeApi

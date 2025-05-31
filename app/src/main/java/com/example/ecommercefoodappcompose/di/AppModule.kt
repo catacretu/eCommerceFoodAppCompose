@@ -4,14 +4,18 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.ecommercefoodappcompose.BASE_URL
+import com.example.ecommercefoodappcompose.LOCAL_URL
 import com.example.ecommercefoodappcompose.OPEN_URL
 import com.example.ecommercefoodappcompose.data.database.FoodDatabase
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
 import com.example.ecommercefoodappcompose.data.local.dao.RecipeDAO
 import com.example.ecommercefoodappcompose.data.remote.FoodService
 import com.example.ecommercefoodappcompose.data.remote.RecipeService
+import com.example.ecommercefoodappcompose.data.remote.StripeApiService
 import com.example.ecommercefoodappcompose.data.repository.FoodRepository
 import com.example.ecommercefoodappcompose.data.repository.FoodRepositoryImpl
+import com.example.ecommercefoodappcompose.data.repository.PaymentRepository
+import com.example.ecommercefoodappcompose.data.repository.PaymentRepositoryImpl
 import com.example.ecommercefoodappcompose.data.repository.RecipeRepository
 import com.example.ecommercefoodappcompose.data.repository.RecipeRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
@@ -76,6 +80,18 @@ object AppModule {
 
     @Provides
     @Singleton
+    @StripeApi
+    fun provideStripeRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(LOCAL_URL)
+            .client(OkHttpClient().newBuilder().build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+
+    @Provides
+    @Singleton
     fun provideFoodService(@FoodApi retrofit: Retrofit): FoodService {
         return retrofit.create(FoodService::class.java)
     }
@@ -84,6 +100,12 @@ object AppModule {
     @Singleton
     fun provideRecipeService(@RecipeApi retrofit: Retrofit): RecipeService {
         return retrofit.create(RecipeService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStripeApiService(@StripeApi retrofit: Retrofit): StripeApiService {
+        return retrofit.create(StripeApiService::class.java)
     }
 
     @Provides
@@ -128,5 +150,11 @@ object AppModule {
         foodDao: FoodDAO
     ): RecipeRepository {
         return RecipeRepositoryImpl(recipeService, recipeDao, foodDao)
+    }
+
+    @Provides
+    @Singleton
+    fun providePaymentRepository(stripeApiService: StripeApiService): PaymentRepository {
+        return PaymentRepositoryImpl(stripeApiService)
     }
 }
