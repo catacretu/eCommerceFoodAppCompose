@@ -9,9 +9,9 @@ import com.example.ecommercefoodappcompose.OPEN_URL
 import com.example.ecommercefoodappcompose.data.database.FoodDatabase
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
 import com.example.ecommercefoodappcompose.data.local.dao.RecipeDAO
-import com.example.ecommercefoodappcompose.data.remote.FoodService
-import com.example.ecommercefoodappcompose.data.remote.RecipeService
-import com.example.ecommercefoodappcompose.data.remote.StripeApiService
+import com.example.ecommercefoodappcompose.data.remote.service.FoodService
+import com.example.ecommercefoodappcompose.data.remote.service.RecipeService
+import com.example.ecommercefoodappcompose.data.remote.service.StripeApiService
 import com.example.ecommercefoodappcompose.data.repository.FoodRepository
 import com.example.ecommercefoodappcompose.data.repository.FoodRepositoryImpl
 import com.example.ecommercefoodappcompose.data.repository.PaymentRepository

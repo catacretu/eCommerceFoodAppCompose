@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +26,9 @@ fun TextFieldWithIcon(
     focusRequester: FocusRequester,
     imeAction: ImeAction = ImeAction.Next,
     onNext: (() -> Unit)? = null,
-    onDone: (() -> Unit)? = null
+    onDone: (() -> Unit)? = null,
+    isError: Boolean = false,
+    errorMessage: String? = null
 ) {
     val focusManager = LocalFocusManager.current
     OutlinedTextField(
@@ -53,6 +56,16 @@ fun TextFieldWithIcon(
                 onDone?.invoke()
                 focusManager.clearFocus()
             }
-        )
+        ),
+        isError = isError,
+        supportingText = {
+            if (isError && errorMessage != null) {
+                Text(
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+        }
     )
 }

@@ -1,4 +1,4 @@
-package com.example.ecommercefoodappcompose.data.remote
+package com.example.ecommercefoodappcompose.data.remote.service
 
 import com.example.ecommercefoodappcompose.data.remote.entity.CreatePaymentIntentRequest
 import com.example.ecommercefoodappcompose.data.remote.entity.PaymentIntentResponse

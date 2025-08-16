@@ -1,6 +1,9 @@
 package com.example.ecommercefoodappcompose.ui.screens
 
 import android.app.Activity
+import android.content.Context
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +17,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,18 +27,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.ui.components.GradientButton
 import com.example.ecommercefoodappcompose.ui.components.OrderCartList
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
+import com.example.ecommercefoodappcompose.ui.viewmodel.PaymentViewModel
+import com.stripe.android.paymentsheet.PaymentSheetResult
 
 @Composable
 fun CheckoutScreen(
     activity: Activity,
+    context: Context,
     navController: NavController,
     foodViewModel: FoodViewModel
 ) {
+    val paymentViewModel: PaymentViewModel = hiltViewModel(
+        viewModelStoreOwner = activity as ComponentActivity
+    )
+    val uiState by paymentViewModel.uiState.collectAsState()
     val shippingDetails = foodViewModel.shippingDetailsState
     val totalAmount: MutableState<Int> = remember { mutableIntStateOf(0) }
     Column(
@@ -136,15 +149,39 @@ fun CheckoutScreen(
             )
         }
 
-        GradientButton(
-            modifier = Modifier
-                .padding(top = 25.dp)
-                .align(Alignment.CenterHorizontally),
-            textButton = "Place Order",
-            onClick = {
-//                foodViewModel.clearShippingDetails()
-                navController.navigate("payment_screen")
+        uiState.errorMessage?.let { error ->
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+        }
+
+        uiState.paymentSheetResult?.let { result ->
+            val resultText = when (result) {
+                is PaymentSheetResult.Completed -> "Payment completed!"
+                is PaymentSheetResult.Canceled -> "Payment canceled."
+                is PaymentSheetResult.Failed -> "Payment failed: ${result.error.localizedMessage}"
             }
-        )
+            Toast.makeText(context, resultText, Toast.LENGTH_SHORT).show()
+        }
+
+        if (uiState.paymentSheetResult == null ||
+            uiState.paymentSheetResult is PaymentSheetResult.Canceled ||
+            uiState.paymentSheetResult is PaymentSheetResult.Failed
+        ) {
+            val amountForPay = totalAmount.value * 100
+            GradientButton(
+                modifier = Modifier
+                    .padding(top = 25.dp)
+                    .align(Alignment.CenterHorizontally),
+                textButton = "Pay ${totalAmount.value}.00 lei",
+                onClick = {
+//                foodViewModel.clearShippingDetails()
+                    paymentViewModel.initiatePayment(
+                        amount = amountForPay,
+                        currency = "ron",
+                        merchantDisplayName = "Food Cart"
+                    )
+                },
+                enabled = !uiState.isLoading
+            )
+        }
     }
 }

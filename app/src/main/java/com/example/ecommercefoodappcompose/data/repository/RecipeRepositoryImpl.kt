@@ -7,9 +7,9 @@ import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
 import com.example.ecommercefoodappcompose.data.local.dao.RecipeDAO
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import com.example.ecommercefoodappcompose.data.local.model.RecipeItem
-import com.example.ecommercefoodappcompose.data.remote.RecipeService
 import com.example.ecommercefoodappcompose.data.remote.entity.ChatRequest
 import com.example.ecommercefoodappcompose.data.remote.entity.Message
+import com.example.ecommercefoodappcompose.data.remote.service.RecipeService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray

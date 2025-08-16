@@ -1,4 +1,4 @@
-package com.example.ecommercefoodappcompose.data.remote
+package com.example.ecommercefoodappcompose.data.remote.service
 
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
 import retrofit2.Response

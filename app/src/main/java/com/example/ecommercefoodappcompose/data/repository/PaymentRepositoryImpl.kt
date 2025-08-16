@@ -1,8 +1,8 @@
 package com.example.ecommercefoodappcompose.data.repository
 
-import com.example.ecommercefoodappcompose.data.remote.StripeApiService
 import com.example.ecommercefoodappcompose.data.remote.entity.CreatePaymentIntentRequest
 import com.example.ecommercefoodappcompose.data.remote.entity.PaymentIntentResponse
+import com.example.ecommercefoodappcompose.data.remote.service.StripeApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject

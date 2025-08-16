@@ -16,7 +16,8 @@ import androidx.compose.ui.unit.dp
 fun GradientButton(
     modifier: Modifier = Modifier,
     textButton: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
@@ -35,7 +36,8 @@ fun GradientButton(
         ),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent
-        )
+        ),
+        enabled = enabled
     ) {
         Text(text = textButton, color = Color.White)
     }

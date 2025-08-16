@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.ecommercefoodappcompose.data.local.dao.FoodDAO
 import com.example.ecommercefoodappcompose.data.local.model.FoodItem
-import com.example.ecommercefoodappcompose.data.remote.FoodService
+import com.example.ecommercefoodappcompose.data.remote.service.FoodService
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
