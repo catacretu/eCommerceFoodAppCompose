@@ -26,7 +26,7 @@ import androidx.compose.runtime.Composable
 // }
 
 enum class AppTheme {
-    GREEN, RED
+    RED, GREEN, BLUE
 }
 
 val GreenLightColorScheme = lightColorScheme(
@@ -181,6 +181,85 @@ val RedDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDarkRed
 )
 
+private val BlueLightScheme = lightColorScheme(
+    primary = primaryLightBlue,
+    onPrimary = onPrimaryLightBlue,
+    primaryContainer = primaryContainerLightBlue,
+    onPrimaryContainer = onPrimaryContainerLightBlue,
+    secondary = secondaryLightBlue,
+    onSecondary = onSecondaryLightBlue,
+    secondaryContainer = secondaryContainerLightBlue,
+    onSecondaryContainer = onSecondaryContainerLightBlue,
+    tertiary = tertiaryLightBlue,
+    onTertiary = onTertiaryLightBlue,
+    tertiaryContainer = tertiaryContainerLightBlue,
+    onTertiaryContainer = onTertiaryContainerLightBlue,
+    error = errorLightBlue,
+    onError = onErrorLightBlue,
+    errorContainer = errorContainerLightBlue,
+    onErrorContainer = onErrorContainerLightBlue,
+    background = backgroundLightBlue,
+    onBackground = onBackgroundLightBlue,
+    surface = surfaceLightBlue,
+    onSurface = onSurfaceLightBlue,
+    surfaceVariant = surfaceVariantLightBlue,
+    onSurfaceVariant = onSurfaceVariantLightBlue,
+    outline = outlineLightBlue,
+    outlineVariant = outlineVariantLightBlue,
+    scrim = scrimLightBlue,
+    inverseSurface = inverseSurfaceLightBlue,
+    inverseOnSurface = inverseOnSurfaceLightBlue,
+    inversePrimary = inversePrimaryLightBlue,
+    surfaceDim = surfaceDimLightBlue,
+    surfaceBright = surfaceBrightLightBlue,
+    surfaceContainerLowest = surfaceContainerLowestLightBlue,
+    surfaceContainerLow = surfaceContainerLowLightBlue,
+    surfaceContainer = surfaceContainerLightBlue,
+    surfaceContainerHigh = surfaceContainerHighLightBlue,
+    surfaceContainerHighest = surfaceContainerHighestLightBlue,
+)
+
+private val BlueDarkScheme = darkColorScheme(
+    primary = primaryDarkBlue,
+    onPrimary = onPrimaryDarkBlue,
+    primaryContainer = primaryContainerDarkBlue,
+    onPrimaryContainer = onPrimaryContainerDarkBlue,
+    secondary = secondaryDarkBlue,
+    onSecondary = onSecondaryDarkBlue,
+    secondaryContainer = secondaryContainerDarkBlue,
+    onSecondaryContainer = onSecondaryContainerDarkBlue,
+    tertiary = tertiaryDarkBlue,
+    onTertiary = onTertiaryDarkBlue,
+    tertiaryContainer = tertiaryContainerDarkBlue,
+    onTertiaryContainer = onTertiaryContainerDarkBlue,
+    error = errorDarkBlue,
+    onError = onErrorDarkBlue,
+    errorContainer = errorContainerDarkBlue,
+    onErrorContainer = onErrorContainerDarkBlue,
+    background = backgroundDarkBlue,
+    onBackground = onBackgroundDarkBlue,
+    surface = surfaceDarkBlue,
+    onSurface = onSurfaceDarkBlue,
+    surfaceVariant = surfaceVariantDarkBlue,
+    onSurfaceVariant = onSurfaceVariantDarkBlue,
+    outline = outlineDarkBlue,
+    outlineVariant = outlineVariantDarkBlue,
+    scrim = scrimDarkBlue,
+    inverseSurface = inverseSurfaceDarkBlue,
+    inverseOnSurface = inverseOnSurfaceDarkBlue,
+    inversePrimary = inversePrimaryDarkBlue,
+    surfaceDim = surfaceDimDarkBlue,
+    surfaceBright = surfaceBrightDarkBlue,
+    surfaceContainerLowest = surfaceContainerLowestDarkBlue,
+    surfaceContainerLow = surfaceContainerLowDarkBlue,
+    surfaceContainer = surfaceContainerDarkBlue,
+    surfaceContainerHigh = surfaceContainerHighDarkBlue,
+    surfaceContainerHighest = surfaceContainerHighestDarkBlue,
+)
+
+
+
+
 @Composable
 fun ECommerceFoodAppComposeTheme(
     selectedTheme: AppTheme = AppTheme.GREEN,
@@ -189,6 +268,7 @@ fun ECommerceFoodAppComposeTheme(
 ) {
     val colorScheme: ColorScheme = when (selectedTheme) {
         AppTheme.RED -> if (useDarkTheme) RedDarkColorScheme else RedLightColorScheme
+        AppTheme.BLUE -> if (useDarkTheme) BlueDarkScheme else BlueLightScheme
         AppTheme.GREEN -> if (useDarkTheme) GreenDarkColorScheme else GreenLightColorScheme
     }
 

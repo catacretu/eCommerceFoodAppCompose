@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ecommercefoodappcompose.ui.theme.AppTheme
+import com.example.ecommercefoodappcompose.ui.theme.primaryLightBlue
 import com.example.ecommercefoodappcompose.ui.theme.primaryLightGreen
 import com.example.ecommercefoodappcompose.ui.theme.primaryLightRed
 
@@ -109,10 +110,6 @@ fun ThemeSelectorWithGradientBorder(
 
     val representativeColor = remember(currentAppTheme) {
         baseColor
-//        when (currentAppTheme) {
-//            AppTheme.RED -> Color(0xFFB71C1C)
-//            AppTheme.GREEN -> Color(0xFF2E7D32)
-//        }
     }
 
     Box(modifier = modifier) {
@@ -130,10 +127,12 @@ fun ThemeSelectorWithGradientBorder(
             modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh)
         ) {
             val baseRedColor = primaryLightRed
+            val baseBlueColor = primaryLightBlue
             val baseGreenColor = primaryLightGreen
             AppTheme.entries.forEach { theme ->
                 val itemColor = when (theme) {
                     AppTheme.RED -> baseRedColor
+                    AppTheme.BLUE -> baseBlueColor
                     AppTheme.GREEN -> baseGreenColor
                 }
                 DropdownMenuItem(

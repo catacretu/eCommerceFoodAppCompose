@@ -24,7 +24,7 @@ fun GradientButton(
         modifier = modifier
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFF32CD32), MaterialTheme.colorScheme.primary),
+                    colors = listOf(MaterialTheme.colorScheme.scrim,MaterialTheme.colorScheme.primary),
                     start = androidx.compose.ui.geometry.Offset(0f, 10f),
                     end = androidx.compose.ui.geometry.Offset(0f, Float.POSITIVE_INFINITY)
                 ),
