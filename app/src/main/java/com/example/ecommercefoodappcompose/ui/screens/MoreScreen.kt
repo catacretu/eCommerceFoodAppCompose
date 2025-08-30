@@ -17,6 +17,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.ecommercefoodappcompose.ui.components.LogoutDialog
 import com.example.ecommercefoodappcompose.ui.components.ThemeSelectorWithGradientBorder
 import com.example.ecommercefoodappcompose.ui.components.bottomBar.BottomNavigationBar
 import com.example.ecommercefoodappcompose.ui.theme.AppTheme
@@ -43,6 +48,7 @@ fun MoreScreen(
 ) {
     val context = LocalContext.current
     val authUiState = authViewModel.authUiState
+    var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(key1 = authUiState) {
         when (authUiState) {
@@ -151,9 +157,21 @@ fun MoreScreen(
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.inversePrimary,
                 modifier = Modifier
-                    .clickable { authViewModel.logout() }
+                    .clickable {
+                        showLogoutDialog = true
+                    }
                     .fillMaxWidth()
                     .padding(top = 15.dp, start = 20.dp, bottom = 10.dp)
+            )
+            LogoutDialog(
+                showDialog = showLogoutDialog,
+                onConfirm = {
+                    showLogoutDialog = false
+                    authViewModel.logout()
+                },
+                onDismiss = {
+                    showLogoutDialog = false
+                }
             )
         }
     }
