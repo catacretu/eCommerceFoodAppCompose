@@ -143,7 +143,7 @@ fun NavigationGraph(
             )
         }
 
-        composable("shipping_screen") {
+        composable("cart_screen/shipping_screen") {
             ShippingScreen(
                 navController,
                 foodViewModel

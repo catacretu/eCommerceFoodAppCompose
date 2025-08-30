@@ -91,7 +91,7 @@ fun CartScreen(
                     modifier = Modifier.padding(top = 15.dp, bottom = 25.dp),
                     textButton = "Checkout",
                     onClick = {
-                        navController.navigate("shipping_screen")
+                        navController.navigate("cart_screen/shipping_screen")
                     }
                 )
             }
