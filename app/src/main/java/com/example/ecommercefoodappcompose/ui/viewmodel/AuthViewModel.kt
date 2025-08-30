@@ -6,8 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 sealed class AuthUiState {
@@ -91,29 +94,21 @@ class AuthViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                firebaseAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            authUiState = AuthUiState.RegisterSuccess
-                        } else {
-                            // Firebase specific error handling
-                            val errorMessage = task.exception?.message
-                            if (errorMessage != null) {
-                                when {
-                                    errorMessage.contains("email address is already in use")
-                                    -> emailError = "Email already in use."
-                                    errorMessage.contains("The email address is badly formatted")
-                                    -> emailError = "Email is badly formatted."
-                                    // Add other specific Firebase Auth errors if needed
-                                    else -> authUiState = AuthUiState.Error(errorMessage)
-                                }
-                            } else {
-                                authUiState = AuthUiState.Error("Registration failed.")
-                            }
-                        }
-                    }
+                firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+                authUiState = AuthUiState.RegisterSuccess
             } catch (e: Exception) {
-                authUiState = AuthUiState.Error(e.message ?: "An unknown error occurred.")
+                authUiState = when (e) {
+                    is FirebaseAuthUserCollisionException -> {
+                        AuthUiState.Error("Email already in use.")
+                    }
+
+                    is FirebaseAuthInvalidCredentialsException -> {
+                        AuthUiState.Error("Email is badly formatted.")
+                    }
+
+                    else ->
+                        AuthUiState.Error(e.message ?: "Registration failed.")
+                }
             }
         }
     }
