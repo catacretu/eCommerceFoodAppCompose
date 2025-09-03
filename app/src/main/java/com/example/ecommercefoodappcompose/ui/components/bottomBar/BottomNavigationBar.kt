@@ -29,7 +29,9 @@ fun BottomNavigationBar(
     NavigationBar {
         screens.forEach { screen ->
             NavigationBarItem(
-                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                selected = currentDestination?.hierarchy?.any { destination ->
+                    destination.route?.startsWith(screen.route) == true
+                } == true,
                 onClick = {
                     navController.navigate(screen.route) {
                         popUpTo(navController.graph.findStartDestination().id) {

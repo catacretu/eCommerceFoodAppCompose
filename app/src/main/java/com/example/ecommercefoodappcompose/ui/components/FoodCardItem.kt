@@ -65,13 +65,3 @@ fun FoodCartItem(
         }
     }
 }
-
-// @Preview(showBackground = true)
-// @Composable
-// fun PreviewCustomCard() {
-//    FoodCartItem(
-//        imageRes = R.drawable.ic_launcher_foreground,
-//        title = "Sample Title",
-//        price = "$99.99"
-//    )
-// }

@@ -53,7 +53,7 @@ class PaymentViewModel @Inject constructor(
 
                 val stripeConfiguration = PaymentSheet.Configuration(
                     merchantDisplayName = merchantDisplayName,
-                    // Opcional: CustomerConfiguration pentru clienți existenți Stripe
+                    // Optional: CustomerConfiguration pentru clienți existenți Stripe
                     // customer = PaymentSheet.CustomerConfiguration(
                     //     id = "cus_YOUR_CUSTOMER_ID",
                     //     ephemeralKeySecret = "ek_test_YOUR_EPHEMERAL_KEY_SECRET"
@@ -61,7 +61,7 @@ class PaymentViewModel @Inject constructor(
                     googlePay = PaymentSheet.GooglePayConfiguration(
                         environment = PaymentSheet.GooglePayConfiguration.Environment.Test,
                         countryCode = "RO"
-                        // currencyCode = currency // Ar trebui să fie aceeași valută ca și PaymentIntent
+                        // currencyCode = currency
                     ),
                     allowsDelayedPaymentMethods = true
                 )
@@ -94,7 +94,7 @@ class PaymentViewModel @Inject constructor(
 
     fun paymentSheetPresentationDone() {
         // Poate fi folosit pentru a reseta _paymentSheetConfig dacă este necesar
-        // sau pentru a evita re-prezentarea la reconfigurări, deși collectLatest ar trebui să ajute.
+        // sau pentru a evita re-randarea la reconfigurări, deși collectLatest ar trebui să ajute.
         // Pentru moment, _paymentSheetConfig.value = null în onPaymentSheetResult și la începutul initiatePayment e suficient.
     }
 }

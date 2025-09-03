@@ -216,7 +216,7 @@ private val BlueLightScheme = lightColorScheme(
     surfaceContainerLow = surfaceContainerLowLightBlue,
     surfaceContainer = surfaceContainerLightBlue,
     surfaceContainerHigh = surfaceContainerHighLightBlue,
-    surfaceContainerHighest = surfaceContainerHighestLightBlue,
+    surfaceContainerHighest = surfaceContainerHighestLightBlue
 )
 
 private val BlueDarkScheme = darkColorScheme(
@@ -254,11 +254,8 @@ private val BlueDarkScheme = darkColorScheme(
     surfaceContainerLow = surfaceContainerLowDarkBlue,
     surfaceContainer = surfaceContainerDarkBlue,
     surfaceContainerHigh = surfaceContainerHighDarkBlue,
-    surfaceContainerHighest = surfaceContainerHighestDarkBlue,
+    surfaceContainerHighest = surfaceContainerHighestDarkBlue
 )
-
-
-
 
 @Composable
 fun ECommerceFoodAppComposeTheme(

@@ -92,7 +92,8 @@ fun CartScreen(
                     textButton = "Checkout",
                     onClick = {
                         navController.navigate("cart_screen/shipping_screen")
-                    }
+                    },
+                    enabled = totalAmount.value != 0
                 )
             }
         }

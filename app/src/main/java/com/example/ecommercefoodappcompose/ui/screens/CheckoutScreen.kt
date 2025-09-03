@@ -20,7 +20,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ecommercefoodappcompose.ui.components.GradientButton
 import com.example.ecommercefoodappcompose.ui.components.OrderCartList
+import com.example.ecommercefoodappcompose.ui.components.PurchaseCompleteModal
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 import com.example.ecommercefoodappcompose.ui.viewmodel.PaymentViewModel
@@ -49,6 +53,7 @@ fun CheckoutScreen(
     val uiState by paymentViewModel.uiState.collectAsState()
     val shippingDetails = foodViewModel.shippingDetailsState
     val totalAmount: MutableState<Int> = remember { mutableIntStateOf(0) }
+    var showModal by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -159,7 +164,21 @@ fun CheckoutScreen(
                 is PaymentSheetResult.Canceled -> "Payment canceled."
                 is PaymentSheetResult.Failed -> "Payment failed: ${result.error.localizedMessage}"
             }
-            Toast.makeText(context, resultText, Toast.LENGTH_SHORT).show()
+            if (result !is PaymentSheetResult.Completed) {
+                Toast.makeText(context, resultText, Toast.LENGTH_SHORT).show()
+            } else {
+                showModal = true
+            }
+            PurchaseCompleteModal(
+                show = showModal,
+                onDismiss = { showModal = false },
+                onBackHome = {
+                    showModal = false
+                    navController.navigate("home_screen") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
         }
 
         if (uiState.paymentSheetResult == null ||

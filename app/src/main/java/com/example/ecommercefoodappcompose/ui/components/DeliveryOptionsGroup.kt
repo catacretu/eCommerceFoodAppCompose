@@ -24,11 +24,6 @@ fun DeliveryOptionsGroup(
 ) {
     val deliveryOptions = DeliveryOption.entries.toTypedArray()
     Column(modifier = modifier.selectableGroup()) {
-//        Text(
-//            "Delivery options:",
-//            style = AppTypography.titleSmall,
-//            modifier = Modifier.padding(bottom = 5.dp)
-//        )
         deliveryOptions.forEach { deliveryOption ->
             Row(
                 modifier = Modifier

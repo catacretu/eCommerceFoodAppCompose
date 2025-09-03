@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.stripe.android)
+    implementation(libs.accompanist.systemuicontroller)
     // Include the financial connections SDK to support US bank account as a payment method
     implementation(libs.financial.connections)
     ksp(libs.hilt.compiler)
