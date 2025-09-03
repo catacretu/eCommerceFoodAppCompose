@@ -20,6 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -54,6 +56,19 @@ fun ShippingScreen(
     val apartmentDetails = remember { mutableStateOf(shippingState.apartmentDetails) }
     val postalCode = remember { mutableStateOf(shippingState.postalCode) }
     val selectedDeliveryOption = remember { mutableStateOf(shippingState.deliveryOption) }
+
+    val isFormValid by remember {
+        derivedStateOf {
+            name.value.isNotBlank() &&
+                phone.value.matches(Regex("^\\d{10,15}$")) &&
+                android.util.Patterns.EMAIL_ADDRESS.matcher(email.value).matches() &&
+                county.value.isNotBlank() &&
+                city.value.isNotBlank() &&
+                street.value.isNotBlank() &&
+                streetNumber.value.isNotBlank() &&
+                postalCode.value.matches(Regex("^[A-Za-z0-9 ]{4,10}$"))
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -268,7 +283,8 @@ fun ShippingScreen(
                         )
                     )
                     navController.navigate("checkout_screen")
-                }
+                },
+                enabled = isFormValid
             ) {
                 Text(text = "Continue")
             }

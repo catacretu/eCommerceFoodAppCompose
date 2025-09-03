@@ -65,8 +65,8 @@ fun PurchaseCompleteModal(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "Your order ${generateOrderId()} has been confirmed and " +
-                            "will be shipped within the next few days. You'll shortly receive an " +
-                            "email confirmation of this order.",
+                        "will be shipped within the next few days. You'll shortly receive an " +
+                        "email confirmation of this order.",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
                 )
