@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
@@ -78,6 +80,7 @@ fun ShippingScreen(
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(paddingValues)
         ) {
             val (
@@ -244,6 +247,7 @@ fun ShippingScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 25.dp)
                     .constrainAs(continueBtn) {
+                        top.linkTo(deliveryOptions.bottom, margin = 15.dp)
                         bottom.linkTo(parent.bottom, margin = 15.dp)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)

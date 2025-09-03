@@ -58,14 +58,16 @@ fun TextFieldWithIcon(
             }
         ),
         isError = isError,
-        supportingText = {
-            if (isError && errorMessage != null) {
+        supportingText = if (isError && errorMessage != null) {
+            {
                 Text(
                     text = errorMessage,
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
+        } else {
+            null
         }
     )
 }
