@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ecommercefoodappcompose.ui.screens.CartScreen
 import com.example.ecommercefoodappcompose.ui.screens.CheckoutScreen
+import com.example.ecommercefoodappcompose.ui.screens.ContactUsScreen
 import com.example.ecommercefoodappcompose.ui.screens.FavouritesScreen
 import com.example.ecommercefoodappcompose.ui.screens.FoodItemDetailsScreen
 import com.example.ecommercefoodappcompose.ui.screens.HomeScreen
@@ -141,6 +142,10 @@ fun NavigationGraph(
                 currentTheme = currentAppTheme,
                 onThemeSelected = onThemeChange
             )
+        }
+
+        composable("more_screen/contact_us") {
+            ContactUsScreen()
         }
 
         composable("cart_screen/shipping_screen") {

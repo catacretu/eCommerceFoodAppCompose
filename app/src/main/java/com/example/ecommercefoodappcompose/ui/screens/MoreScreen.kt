@@ -117,7 +117,11 @@ fun MoreScreen(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.inversePrimary,
-                modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 10.dp)
+                modifier = Modifier
+                    .padding(top = 15.dp, start = 20.dp, bottom = 10.dp)
+                    .clickable {
+                        navController.navigate("more_screen/contact_us")
+                    }
             )
             Spacer(
                 modifier = Modifier
