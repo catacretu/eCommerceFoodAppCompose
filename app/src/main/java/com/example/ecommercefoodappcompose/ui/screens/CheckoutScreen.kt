@@ -171,9 +171,13 @@ fun CheckoutScreen(
             }
             PurchaseCompleteModal(
                 show = showModal,
-                onDismiss = { showModal = false },
+                onDismiss = {
+                    showModal = false
+                    uiState.paymentSheetResult = null
+                },
                 onBackHome = {
                     showModal = false
+                    uiState.paymentSheetResult = null
                     navController.navigate("home_screen") {
                         popUpTo(0) { inclusive = true }
                     }

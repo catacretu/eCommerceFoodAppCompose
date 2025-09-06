@@ -22,7 +22,7 @@ data class PaymentUiState(
     val clientSecret: String? = null,
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val paymentSheetResult: PaymentSheetResult? = null
+    var paymentSheetResult: PaymentSheetResult? = null
 )
 
 @HiltViewModel
