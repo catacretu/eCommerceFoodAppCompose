@@ -5,6 +5,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,6 +39,7 @@ import com.example.ecommercefoodappcompose.ui.components.PurchaseCompleteModal
 import com.example.ecommercefoodappcompose.ui.theme.AppTypography
 import com.example.ecommercefoodappcompose.ui.viewmodel.FoodViewModel
 import com.example.ecommercefoodappcompose.ui.viewmodel.PaymentViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.stripe.android.paymentsheet.PaymentSheetResult
 
 @Composable
@@ -54,6 +56,9 @@ fun CheckoutScreen(
     val shippingDetails = foodViewModel.shippingDetailsState
     val totalAmount: MutableState<Int> = remember { mutableIntStateOf(0) }
     var showModal by rememberSaveable { mutableStateOf(false) }
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = isSystemInDarkTheme()
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -174,10 +179,18 @@ fun CheckoutScreen(
                 onDismiss = {
                     showModal = false
                     uiState.paymentSheetResult = null
+                    systemUiController.setStatusBarColor(
+                        color = Color.Black.copy(alpha = 0f),
+                        darkIcons = useDarkIcons
+                    )
                 },
                 onBackHome = {
                     showModal = false
                     uiState.paymentSheetResult = null
+                    systemUiController.setStatusBarColor(
+                        color = Color.Black.copy(alpha = 0f),
+                        darkIcons = useDarkIcons
+                    )
                     navController.navigate("home_screen") {
                         popUpTo(0) { inclusive = true }
                     }
